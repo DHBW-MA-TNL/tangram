@@ -1,11 +1,16 @@
 import javax.swing.*;
 import java.awt.*;
+import java.awt.event.*;
+import java.util.Random;
 
-public class TangramPanel extends JPanel {
+public class TangramPanel extends JPanel implements MouseListener, MouseMotionListener {
     private TangramShape[] shapes;
+    private TangramShape selectedShape = null;
 
     public TangramPanel(TangramShape[] shapes) {
         this.shapes = shapes;
+        addMouseListener(this);
+        addMouseMotionListener(this);
     }
 
     @Override
@@ -16,58 +21,72 @@ public class TangramPanel extends JPanel {
         }
     }
 
-    // TODO: Implement methods to handle mouse events for dragging shapes
-    //do
-    public void rotateShape(int shapeIndex, double angle) {
-        shapes[shapeIndex].rotate(angle);
-        repaint();
-    }
-
-    public void flipShape(int shapeIndex, boolean horizontal) {
-        shapes[shapeIndex].flip(horizontal);
-        repaint();
-    }
-
-    public void dragShape(int shapeIndex, int dx, int dy) {
-        shapes[shapeIndex].drag(dx, dy);
-        repaint();
-    }
-
-    public void resetShapes() {
-        for (TangramShape shape : shapes) {
-            shape.reset();
+    // MouseListener methods
+    @Override
+    public void mouseClicked(MouseEvent e) {
+        // Handle mouse click event
+        if(selectedShape != null){
+            selectedShape = null;
         }
-        repaint();
-    }
-
-    public boolean isSolved() {
         for (TangramShape shape : shapes) {
-            if (!shape.isSolved()) {
-                return false;
+            if (shape.shape.contains(e.getPoint())){
+                selectedShape = shape;
+                System.out.println("Shape selected");
+                break;
+            }else {
+                selectedShape = null;
             }
+            System.out.println("Mouse clicked at: " + e.getPoint());
         }
-        return true;
     }
 
-    public void solve() {
-        for (TangramShape shape : shapes) {
-            shape.solve();
+    @Override
+    public void mousePressed(MouseEvent e) {
+    }
+
+    @Override
+    public void mouseReleased(MouseEvent e) {
+        // Handle mouse release event
+    }
+
+    @Override
+    public void mouseEntered(MouseEvent e) {
+        // Handle mouse enter event
+    }
+
+    @Override
+    public void mouseExited(MouseEvent e) {
+        // Handle mouse exit event
+    }
+
+    // MouseMotionListener methods
+    @Override
+    public void mouseDragged(MouseEvent e) {
+
+    }
+
+    @Override
+    public void mouseMoved(MouseEvent e) {
+        // Handle mouse move event
+        // Handle mouse drag event
+
+        if (selectedShape != null){
+            Point currentPoint = e.getPoint();
+            Point previousPoint = selectedShape.shape.getBounds().getLocation();
+
+            if (previousPoint != null) {
+                // Calculate the difference between the new position and the current position
+                int dx = currentPoint.x - previousPoint.x;
+                int dy = currentPoint.y - previousPoint.y;
+
+                // Move the shape by the calculated difference
+                selectedShape.move(new Point(dx, dy));
+            }
+
+            repaint();
+            TangramGame.touches();
         }
-        repaint();
     }
 
-    public void shuffle() {
-        for (TangramShape shape : shapes) {
-            shape.shuffle();
-        }
-        repaint();
-    }
-
-    public void setShapes(TangramShape[] shapes) {
-        this.shapes = shapes;
-        repaint();
-    }
-
-
-
+    // Other methods...
 }

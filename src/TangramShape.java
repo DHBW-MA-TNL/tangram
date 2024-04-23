@@ -1,13 +1,15 @@
 import java.awt.*;
 
 public class TangramShape {
-    private Polygon shape;
+    public Polygon shape;
     private Color color;
 
     public TangramShape(Polygon shape, Color color) {
         this.shape = shape;
         this.color = color;
     }
+
+
 
     public void draw(Graphics g) {
         g.setColor(color);
@@ -24,4 +26,7 @@ public class TangramShape {
 
     }
 
+    public void move(Point p) {
+        shape.translate(p.x, p.y);
+    }
 }
