@@ -1,7 +1,6 @@
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.*;
-import java.util.Random;
 
 public class TangramPanel extends JPanel implements MouseListener, MouseMotionListener {
     private TangramShape[] shapes;
@@ -11,7 +10,12 @@ public class TangramPanel extends JPanel implements MouseListener, MouseMotionLi
         this.shapes = shapes;
         addMouseListener(this);
         addMouseMotionListener(this);
+        addKeyListener(new KeyPress());
+        setFocusable(true);
+        setFocusTraversalKeysEnabled(false);
     }
+
+
 
     @Override
     protected void paintComponent(Graphics g) {
@@ -25,15 +29,15 @@ public class TangramPanel extends JPanel implements MouseListener, MouseMotionLi
     @Override
     public void mouseClicked(MouseEvent e) {
         // Handle mouse click event
-        if(selectedShape != null){
+        if (selectedShape != null) {
             selectedShape = null;
         }
         for (TangramShape shape : shapes) {
-            if (shape.shape.contains(e.getPoint())){
+            if (shape.shape.contains(e.getPoint())) {
                 selectedShape = shape;
                 System.out.println("Shape selected");
                 break;
-            }else {
+            } else {
                 selectedShape = null;
             }
             System.out.println("Mouse clicked at: " + e.getPoint());
@@ -70,7 +74,7 @@ public class TangramPanel extends JPanel implements MouseListener, MouseMotionLi
         // Handle mouse move event
         // Handle mouse drag event
 
-        if (selectedShape != null){
+        if (selectedShape != null) {
             Point currentPoint = e.getPoint();
             Point previousPoint = selectedShape.shape.getBounds().getLocation();
 
@@ -88,5 +92,26 @@ public class TangramPanel extends JPanel implements MouseListener, MouseMotionLi
         }
     }
 
+
+
     // Other methods...
+
+
+private class KeyPress extends KeyAdapter {
+    @Override
+    public void keyReleased(KeyEvent e) {
+        System.out.println("Key released: " + e.getKeyCode());
+        // Handle key release event
+        switch (e.getKeyCode()) {
+            case KeyEvent.VK_R -> {
+                // Rotate the selected shape
+                if (selectedShape != null) {
+                    System.out.println("Rotating shape");
+                    selectedShape.rotate(Math.toRadians(10));
+                    repaint();
+                }
+            }
+        }
+    }
+}
 }
