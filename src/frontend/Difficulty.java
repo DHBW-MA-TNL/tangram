@@ -24,6 +24,16 @@ public class Difficulty extends JFrame implements ActionListener {
         super("Tangram - ein klassisches Puzzle neu gedacht");
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         frame.setLayout(null);
+
+        btn_unerfahren = new JButton("Confirm");
+        frame.add(btn_unerfahren);
+        btn_unerfahren.setBounds(100, 100, 200, 50);
+        btn_unerfahren.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                JOptionPane.showMessageDialog(frame, "Top");
+            }
+        });
     }
 
     private void showWindow(){
