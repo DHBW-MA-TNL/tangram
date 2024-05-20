@@ -19,10 +19,22 @@ public class Difficulty extends JFrame implements ActionListener {
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         frame.setLayout(null);
 
+        addTitle("Tangram - ein klassisches", 275,10);
+        addTitle("Puzzle neu gedacht", 275,70);
+
         addButton("Unerfahren", 100, 100, Level.Difficulty.UNERFAHREN);
         addButton("Anfänger", 200, 200, Level.Difficulty.ANFAENGER);
 
         frame.setResizable(false);
+    }
+
+    private void addTitle(String text, int x, int y) {
+        JLabel title = new JLabel(text);
+        title.setFont(new Font("Arial", Font.BOLD, 50));
+        title.setVerticalAlignment(SwingConstants.CENTER);
+        title.setHorizontalAlignment(SwingConstants.CENTER);
+        frame.add(title);
+        title.setBounds(x, y, 800, 60);
     }
 
     private void addButton(String text, int x, int y, Level.Difficulty selectedLevel) {
