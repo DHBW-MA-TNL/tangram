@@ -1,7 +1,6 @@
 package frontend;
 
 import javax.swing.*;
-import javax.swing.border.LineBorder;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -13,17 +12,25 @@ public class Difficulty extends JFrame implements ActionListener {
     private final JFrame frame = new JFrame("Tangram - ein klassisches Puzzle neu gedacht");
     public Level.Difficulty level;
 
+    private int middleX = 675;  // The middle point X for the area in which the buttons should be placed
+    private int middleY = 430;  // The middle point Y for the area in which the buttons should be placed
+    private int differX = 238;  // The difference between the single buttons at the X line
+    private int differY = 98;   // The difference between the single buttons at the Y line
+
 
     public Difficulty() {
         super("Tangram - ein klassisches Puzzle neu gedacht");
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         frame.setLayout(null);
 
-        addTitle("Tangram - ein klassisches", 275,10);
-        addTitle("Puzzle neu gedacht", 275,70);
+        addTitle("Tangram - ein klassisches", 275, 10);
+        addTitle("Puzzle neu gedacht", 275, 70);
 
-        addButton("Unerfahren", 100, 100, Level.Difficulty.UNERFAHREN);
-        addButton("Anfänger", 200, 200, Level.Difficulty.ANFAENGER);
+        addButton("Unerfahren", middleX - 2 * differX, middleY + 2 * differY, Level.Difficulty.UNERFAHREN);
+        addButton("Anfänger", middleX - differX, middleY + differY, Level.Difficulty.ANFAENGER);
+        addButton("Fortgeschrittener", middleX, middleY, Level.Difficulty.FORTGESCHRITTEN);
+        addButton("Experte", middleX + differX, middleY - differY, Level.Difficulty.EXPERTE);
+        addButton("Profi", middleX + 2 * differX, middleY - 2 * differY, Level.Difficulty.PROFI);
 
         frame.setResizable(false);
     }
@@ -40,7 +47,7 @@ public class Difficulty extends JFrame implements ActionListener {
     private void addButton(String text, int x, int y, Level.Difficulty selectedLevel) {
         JButton button = new JButton(text);
         frame.add(button);
-        button.setBounds(x, y, 200, 50);
+        button.setBounds(x - 100, y - 25, 200, 50);
         button.addActionListener(e -> {
                     level = selectedLevel;
                     System.out.println(level);
