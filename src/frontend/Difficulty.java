@@ -36,6 +36,10 @@ public class Difficulty extends JFrame implements ActionListener {
         );
     }
 
+    public Level.Difficulty getLevel() {
+        return this.level;
+    }
+
     private void showWindow() {
         frame.setSize(1350, 770); // Breite x Höhe
         frame.setVisible(true);
