@@ -23,14 +23,19 @@ public class Difficulty extends JFrame implements ActionListener {
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         frame.setLayout(null);
 
-        addTitle("Tangram - ein klassisches", 275, 10);
-        addTitle("Puzzle neu gedacht", 275, 70);
+        addTitle("Tangram - ein klassisches", middleX, 10);
+        addTitle("Puzzle neu gedacht", middleX, 70);
 
         addButton("Unerfahren", middleX - 2 * differX, middleY + 2 * differY, Level.Difficulty.UNERFAHREN);
         addButton("Anfänger", middleX - differX, middleY + differY, Level.Difficulty.ANFAENGER);
         addButton("Fortgeschrittener", middleX, middleY, Level.Difficulty.FORTGESCHRITTEN);
         addButton("Experte", middleX + differX, middleY - differY, Level.Difficulty.EXPERTE);
         addButton("Profi", middleX + 2 * differX, middleY - 2 * differY, Level.Difficulty.PROFI);
+
+        JLabel test = new JLabel();
+        frame.add(test);
+        test.setBounds(50, 180, 1230, 500);
+        //test.setBorder(BorderFactory.createLineBorder(Color.BLACK));
 
         frame.setResizable(false);
     }
@@ -41,7 +46,7 @@ public class Difficulty extends JFrame implements ActionListener {
         title.setVerticalAlignment(SwingConstants.CENTER);
         title.setHorizontalAlignment(SwingConstants.CENTER);
         frame.add(title);
-        title.setBounds(x, y, 800, 60);
+        title.setBounds(x-400, y, 800, 60);
     }
 
     private void addButton(String text, int x, int y, Level.Difficulty selectedLevel) {
