@@ -1,6 +1,8 @@
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.*;
+import java.util.Arrays;
+import java.util.List;
 
 public class TangramPanel extends JPanel implements MouseListener, MouseMotionListener {
     private TangramShape[] shapes;
@@ -137,6 +139,17 @@ private class KeyPress extends KeyAdapter {
                     repaint();
                 }
             }
+
+            case KeyEvent.VK_S -> {
+                // Shuffle the shapes
+                System.out.println("Shuffling shapes");
+
+                    PositionRandomizer.positionAllPolygons(Arrays.asList(shapes), 800, 800);
+
+                repaint();
+
+            }
+
         }
     }
 }
