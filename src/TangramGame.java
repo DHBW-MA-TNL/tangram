@@ -8,17 +8,33 @@ public class TangramGame extends JFrame{
     public static List<TangramShape> shapes = new ArrayList<>();
 
     public  TangramGame(){
-        Polygon a = new Polygon (new int[]{0, 100, 100 , 0}, new int[]{0, 0, 100 , 100}, 4);
-        Polygon b = new Polygon(new int[]{0, 100, 300}, new int[]{101, 300, 150}, 3);
+        int multiplier = 4; // Change this to your desired multiplier
+        Polygon D1 = multiplyPolygon(new Polygon(new int[]{0, 100, 50}, new int[]{0, 0, 50}, 3), multiplier);
+        Polygon D2 = multiplyPolygon(new Polygon(new int[]{100, 50, 100}, new int[]{0, 50, 100}, 3), multiplier);
+        Polygon D3 = multiplyPolygon(new Polygon(new int[]{0, 25, 0}, new int[]{0, 25, 50}, 3), multiplier);
+        Polygon D4 = multiplyPolygon(new Polygon(new int[]{50, 25, 75}, new int[]{50, 75, 75}, 3), multiplier);
+        Polygon D5 = multiplyPolygon(new Polygon(new int[]{0, 0, 50}, new int[]{50, 100, 100}, 3), multiplier);
+        Polygon Q1 = multiplyPolygon(new Polygon(new int[]{25, 50, 25, 0}, new int[]{25, 50, 75, 50}, 4), multiplier);
+        Polygon P1 = multiplyPolygon(new Polygon(new int[]{25, 75, 100, 50}, new int[]{75, 75, 100, 100}, 4), multiplier);
 
         //Polygon b = new Polygon(new int[]{100, 200, 300}, new int[]{150, 300, 150}, 3);
-        List<Line2D> edgesA = getEdges(a);
-        List<Line2D> edgesB = getEdges(b);
+        List<Line2D> edgesA = getEdges(D1);
+        List<Line2D> edgesB = getEdges(D2);
+
+        //shapes
+        shapes.add(new TangramShape(D1, Color.RED));
+        shapes.add(new TangramShape(D2, Color.BLUE));
+        shapes.add(new TangramShape(D3, Color.GREEN));
+        shapes.add(new TangramShape(D4, Color.YELLOW));
+        shapes.add(new TangramShape(D5, Color.ORANGE));
+        shapes.add(new TangramShape(Q1, Color.PINK));
+        shapes.add(new TangramShape(P1, Color.CYAN));
 
         for (int i = 0; i < edgesA.size(); i++) {
             for (int j = 0; j < edgesB.size(); j++) {
                 if (edgesA.get(i).intersectsLine(edgesB.get(j))) {
-                    System.out.println("Intersecting");
+
+
                 }
             }
         }
@@ -26,9 +42,7 @@ public class TangramGame extends JFrame{
 
 
 
-        //shapes
-        shapes.add(new TangramShape(a, Color.RED));
-        shapes.add(new TangramShape(b, Color.RED));
+
 
 
 
@@ -69,5 +83,17 @@ public class TangramGame extends JFrame{
                 }
             }
         }
+    }
+
+    public Polygon multiplyPolygon(Polygon polygon, int multiplier) {
+        int[] xpoints = new int[polygon.npoints];
+        int[] ypoints = new int[polygon.npoints];
+
+        for (int i = 0; i < polygon.npoints; i++) {
+            xpoints[i] = polygon.xpoints[i] * multiplier;
+            ypoints[i] = polygon.ypoints[i] * multiplier;
+        }
+
+        return new Polygon(xpoints, ypoints, polygon.npoints);
     }
 }
