@@ -89,6 +89,8 @@ public class TangramPanel extends JPanel implements MouseListener, MouseMotionLi
 
             repaint();
             TangramGame.touches();
+
+
         }
     }
 
@@ -107,7 +109,31 @@ private class KeyPress extends KeyAdapter {
                 // Rotate the selected shape
                 if (selectedShape != null) {
                     System.out.println("Rotating shape");
-                    selectedShape.rotate(Math.toRadians(10));
+                    selectedShape.rotate(Math.toRadians(45));
+                    repaint();
+                }
+            }
+            case KeyEvent.VK_SPACE -> {
+                // Drop selected shape
+                if (selectedShape != null) {
+                    System.out.println("Dropping shape");
+                    for (TangramShape shape : shapes) {
+                       if (selectedShape.isCloseTo(shape)) {
+                           System.out.println("Close to shape");
+                           selectedShape.shape.xpoints = shape.shape.xpoints;
+                            selectedShape.shape.ypoints = shape.shape.ypoints;
+                           repaint();
+                       }
+
+                    }
+                    selectedShape= null;
+                }
+            }
+            case KeyEvent.VK_F -> {
+                // Flip the selected shape
+                if (selectedShape != null) {
+                    System.out.println("Flipping shape");
+                    selectedShape.flip();
                     repaint();
                 }
             }
