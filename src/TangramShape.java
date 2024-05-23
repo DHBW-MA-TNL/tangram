@@ -1,4 +1,6 @@
 import java.awt.*;
+import java.util.Vector;
+import java.util.Arrays;
 
 public class TangramShape {
     public Polygon shape;
@@ -7,6 +9,7 @@ public class TangramShape {
     public TangramShape(Polygon shape, Color color) {
         this.shape = shape;
         this.color = color;
+
     }
 
     public String toString() {
@@ -43,9 +46,24 @@ public class TangramShape {
 
     }
 
+    public boolean isCloseTo(TangramShape that) {
+        if (this.shape.npoints== that.shape.npoints){
+            for (int i = 0; i < this.shape.npoints; i++) {
+                if (Math.abs(this.shape.xpoints[i] - that.shape.xpoints[i]) < 5 && Math.abs( this.shape.ypoints[i] - that.shape.ypoints[i]) < 5) {
+                    return true;
+                }
+            }
+        }
+       return false;
+    }
+
 
 
     public void move(Point p) {
         shape.translate(p.x, p.y);
+    }
+
+    public void flip() {
+        
     }
 }
