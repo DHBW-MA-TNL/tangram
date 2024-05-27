@@ -4,6 +4,7 @@ import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.util.Objects;
 
 import backend.Level;
 
@@ -22,6 +23,12 @@ public class Difficulty extends JFrame implements ActionListener {
         super("Tangram - ein klassisches Puzzle neu gedacht");
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         frame.setLayout(null);
+
+        // Füge die Schwierigkeitsskala hinzu
+        DifficultyScalePanel scalePanel = new DifficultyScalePanel();
+        scalePanel.setBounds(0, 150, 200, 100);
+        frame.add(scalePanel);
+
 
         addTitle("Tangram - ein klassisches", middleX, 10);
         addTitle("Puzzle neu gedacht", middleX, 70);
@@ -50,7 +57,9 @@ public class Difficulty extends JFrame implements ActionListener {
     }
 
     private void addButton(String text, int x, int y, Level.Difficulty selectedLevel) {
-        JButton button = new JButton(text);
+        RoundButton button = new RoundButton(text);
+        button.setBackground(Color.LIGHT_GRAY); // Setze die Hintergrundfarbe des Buttons
+        button.setForeground(Color.BLACK); // Setze die Schriftfarbe des Buttons
         frame.add(button);
         button.setBounds(x - 100, y - 25, 200, 50);
         button.addActionListener(e -> {
