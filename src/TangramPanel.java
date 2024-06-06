@@ -141,7 +141,7 @@ private class KeyPress extends KeyAdapter {
                 // Rotate the selected shape
                 if (selectedShape != null) {
                     System.out.println("Rotating shape");
-                    selectedShape.rotateAroundPoint(new Point(selectedShape.shape.xpoints[0], selectedShape.shape.ypoints[0]), Math.toRadians(45));
+                   // selectedShape.rotateAroundPoint(new Point(selectedShape.shape.xpoints[0], selectedShape.shape.ypoints[0]), Math.toRadians(45));
                 }
             }
             case KeyEvent.VK_SPACE -> {
@@ -151,7 +151,7 @@ private class KeyPress extends KeyAdapter {
                 // Flip the selected shape
                 if (selectedShape != null) {
                     System.out.println("Flipping shape");
-                    selectedShape.flip();
+                    selectedShape.rotate(90);
                     repaint();
                 }
             }
@@ -176,7 +176,7 @@ private class KeyPress extends KeyAdapter {
                 // Rotate the selected shape
                 if (selectedShape != null) {
                     System.out.println("Rotating shape");
-                    selectedShape.rotateAroundPoint(new Point(selectedShape.shape.xpoints[0], selectedShape.shape.ypoints[0]), Math.toRadians(45));
+                    selectedShape.rotateAroundPoint(new Point(selectedShape.shape.xpoints[0], selectedShape.shape.ypoints[0]), 90);
 
                     repaint();
                 }

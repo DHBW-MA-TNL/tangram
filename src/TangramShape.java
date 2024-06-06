@@ -4,15 +4,15 @@ import java.util.Vector;
 
 public class TangramShape {
     public Polygon shape;
-    private Color color;
+    public Color color;
     public List<Point> points = new Vector<>();
+
     public TangramShape(Polygon shape, Color color) {
         this.shape = shape;
         this.color = color;
         setPoints();
 
     }
-
 
 
     void setPoints() {
@@ -29,7 +29,6 @@ public class TangramShape {
                 "coordinates=" + shape.getBounds() +
                 '}';
     }
-
 
 
     public void draw(Graphics g) {
@@ -70,28 +69,27 @@ public class TangramShape {
     }
 
     public boolean isCloseTo(TangramShape that) {
-        if (this.shape.npoints== that.shape.npoints){
+        if (this.shape.npoints == that.shape.npoints) {
             for (int i = 0; i < this.shape.npoints; i++) {
-                if (Math.abs(this.distanceTo(that)) < 15 ) {
-                    if(this.getSize()==that.getSize()){
+                if (Math.abs(this.distanceTo(that)) < 15) {
+                    if (this.getSize() == that.getSize()) {
                         return true;
                     }
                 }
             }
         }
-       return false;
+        return false;
     }
 
     public boolean samePosition(TangramShape that) {
         boolean same = true;
-        for (int i = 0; i < this.shape.npoints-1; i++) {
+        for (int i = 0; i < this.shape.npoints - 1; i++) {
             if (this.shape.xpoints[i] != that.shape.xpoints[i] || this.shape.ypoints[i] != that.shape.ypoints[i]) {
                 same = false;
             }
         }
         return same;
     }
-
 
 
     public void move(Point p) {
@@ -113,7 +111,7 @@ public class TangramShape {
     }
 
     public void flip() {
-        
+
     }
 
     public int getSize() {
@@ -130,26 +128,30 @@ public class TangramShape {
     }
 
     public void rotateAroundPoint(Point p, double angle) {
-        for (int i = 0; i < shape.npoints; i++) {
-            double x = shape.xpoints[i];
-            double y = shape.ypoints[i];
-            double newX = p.x + (x - p.x) * Math.cos(angle) - (y - p.y) * Math.sin(angle);
-            double newY = p.y + (x - p.x) * Math.sin(angle) + (y - p.y) * Math.cos(angle);
-            shape.xpoints[i] = (int) newX;
-            shape.ypoints[i] = (int) newY;
+        double rad = Math.toRadians(angle);
+        double cos = Math.cos(rad);
+        double sin = Math.sin(rad);
+
+        for (int i = 0; i < this.shape.npoints; i++) {
+            int dx = this.shape.xpoints[i] - p.x;
+            int dy = this.shape.ypoints[i] - p.y;
+
+            this.shape.xpoints[i] = p.x + (int) Math.round(dx * cos - dy * sin);
+            this.shape.ypoints[i] = p.y + (int) Math.round(dx * sin + dy * cos);
         }
     }
 
     public boolean overlaps(TangramShape that) {
+        int count = 0;
         for (int i = 0; i < this.shape.npoints; i++) {
             if (that.shape.contains(this.shape.xpoints[i], this.shape.ypoints[i])) {
-                return true;
+                count++;
             }
         }
-        return false;
+        return count > 1;
     }
 
-    public void movePolygonToPoint( int npoint, Point targetPoint) {
+    public void movePolygonToPoint(int npoint, Point targetPoint) {
         if (npoint < 0 || npoint >= this.shape.npoints) {
             throw new IllegalArgumentException("Invalid npoint");
         }
@@ -159,9 +161,15 @@ public class TangramShape {
 
         this.shape.translate(dx, dy);
     }
-    public void alignNPointToPoint(int npoint, Point targetPoint) {
-        movePolygonToPoint(npoint, targetPoint);
-        setPoints();
+
+    public void alignNPointToPoint(int n, Point p) {
+        int dx = p.x - this.shape.xpoints[n];
+        int dy = p.y - this.shape.ypoints[n];
+
+        for (int i = 0; i < this.shape.npoints; i++) {
+            this.shape.xpoints[i] += dx;
+            this.shape.ypoints[i] += dy;
+        }
     }
 
     public boolean onlyVertexInCommon(TangramShape that) {
@@ -173,6 +181,49 @@ public class TangramShape {
                 }
             }
         }
+        System.out.println("count = " + count);
         return count == 1;
     }
+
+    public int vertexInCommon(TangramShape that) {
+        for (int i = 0; i < this.shape.npoints; i++) {
+            for (int j = 0; j < that.shape.npoints; j++) {
+                if (this.shape.xpoints[i] == that.shape.xpoints[j] && this.shape.ypoints[i] == that.shape.ypoints[j]) {
+                    return i;
+                }
+            }
+        }
+        return -1;
+    }
+
+    public boolean isInside(TangramShape that) {
+        for (int i = 0; i < this.shape.npoints; i++) {
+            if (!that.shape.contains(this.shape.xpoints[i], this.shape.ypoints[i])) {
+                return false;
+            }
+        }
+        return true;
+    }
+
+    public boolean touches(TangramShape that) {
+        for (int i = 0; i < this.shape.npoints; i++) {
+            for (int j = 0; j < that.shape.npoints; j++) {
+                if (Math.abs(this.shape.xpoints[i] - that.shape.xpoints[j]) < 10 && Math.abs(this.shape.ypoints[i] - that.shape.ypoints[j]) < 10) {
+                    return true;
+                }
+            }
+        }
+        return false;
+    }
+
+    public boolean centerPointInside(TangramShape that) {
+        int x = this.shape.getBounds().x + this.shape.getBounds().width / 2;
+        int y = this.shape.getBounds().y + this.shape.getBounds().height / 2;
+        return that.shape.contains(x, y);
+    }
+
+
+
+
+
 }

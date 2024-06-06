@@ -18,6 +18,7 @@ public class PositionRandomizer {
     }
 
     public static List<TangramShape> shufflePolygons(List<TangramShape> unused, List<TangramShape> used, int px, int py) {
+
         return shufflePolygons(unused, used, px, py, new ArrayList<>());
     }
 
@@ -25,40 +26,52 @@ public class PositionRandomizer {
         if (unused.isEmpty()) {
             return used;
         }
+
         Point start = new Point(px, py);
         TangramShape current = unused.get(0);
         current.alignNPointToPoint(0, start);
-        int randomNPoint = random.nextInt(current.shape.npoints);
+        int rdmNPoint = random.nextInt(current.shape.npoints);
 
-
-
-
-        Point next = new Point(current.shape.xpoints[randomNPoint], current.shape.ypoints[randomNPoint]);
-
-        boolean intersects = false;
+// Check if there are already used polygons
         if (!used.isEmpty()) {
-            for (Point vertex : vertices) {
+            boolean overlaps = true;
+            for (Point point : vertices) {
+
+                current.alignNPointToPoint(rdmNPoint, point);
                 for (TangramShape shape : used) {
-                    for (int i = 0; i < 8; i++) {
-                        if (TangramGame.getEdges(shape.shape).stream().anyMatch(edge -> edge.intersectsLine(vertex.x, vertex.y, next.x, next.y))) {
-                            for(int j = 0; j < current.shape.npoints; j++){
-                                if(j!=randomNPoint){
-                                    vertices.add(new Point(current.shape.xpoints[j], current.shape.ypoints[j]));
-                                }
-                            }
+
+
+                    for (int i=0; i<=8; i++) {
+                        if (current.overlaps(shape) ||  current.vertexInCommon(shape) >1 || current.isInside(shape) || current.touches(shape) || current.centerPointInside(shape)){
+                            System.out.println(current.color.toString() + " overlaps with " + shape.color.toString() );
+                            current.rotateAroundPoint(point, 45);
+                        }else {
+                            System.out.println(current.color.toString()  +" " +current.vertexInCommon(shape)+"  with " + shape.color.toString() +" ");
+                            overlaps = false;
                             break;
-                        } else {
-                            current.rotateAroundPoint(start, 45);
                         }
                     }
+                    if (!overlaps) {
+                        System.out.println("Does not overlap");
+                        break;
+                    }
+
                 }
-                System.out.println("aligning to point: " + vertex);
-                current.alignNPointToPoint(randomNPoint, vertex);
+                if (!overlaps) {
+                    break;
+                }
+
             }
 
+
         }
+
+        for (int i = 0; i < current.shape.npoints; i++) {
+                vertices.add(new Point(current.shape.xpoints[i], current.shape.ypoints[i]));
+        }
+        Point next = vertices.get(random.nextInt(vertices.size()));
+
         used.add(unused.remove(0));
-        System.out.println("used size: " + used.size());
         return shufflePolygons(unused, used, next.x, next.y, vertices);
     }
 }

@@ -23,7 +23,7 @@ public class TangramGame extends JFrame{
         defaultShapes();
         setUiElements();
         //TangramShape
-        List<TangramShape> rndPos = PositionRandomizer.shufflePolygons(shapes, new ArrayList<>(), 100, 100);
+        List<TangramShape> rndPos = PositionRandomizer.shufflePolygons(shapes, new ArrayList<>(), 300, 300);
 
 
 
@@ -75,7 +75,7 @@ public class TangramGame extends JFrame{
         }
     }
 
-    public Polygon multiplyPolygon(Polygon polygon, int multiplier) {
+    public static Polygon multiplyPolygon(Polygon polygon, int multiplier) {
         int[] xpoints = new int[polygon.npoints];
         int[] ypoints = new int[polygon.npoints];
 
@@ -87,7 +87,7 @@ public class TangramGame extends JFrame{
         return new Polygon(xpoints, ypoints, polygon.npoints);
     }
 
-    public void defaultShapes(){
+    public static void defaultShapes(){
         int multiplier = 2; // Change this to your desired multiplier
         Polygon D1 = multiplyPolygon(new Polygon(new int[]{0, 100, 50}, new int[]{0, 0, 50}, 3), multiplier);
         Polygon D2 = multiplyPolygon(new Polygon(new int[]{100, 50, 100}, new int[]{0, 50, 100}, 3), multiplier);
@@ -108,22 +108,22 @@ public class TangramGame extends JFrame{
 
 
         //shapes
-/*        shapes.add(new TangramShape(D1, Color.BLUE));
+       shapes.add(new TangramShape(D1, Color.BLUE));
         shapes.add(new TangramShape(D2, Color.RED));
          shapes.add(new TangramShape(D3, Color.GREEN));
         shapes.add(new TangramShape(D4, Color.MAGENTA));
       shapes.add(new TangramShape(D5, Color.ORANGE));
        shapes.add(new TangramShape(Q1, Color.YELLOW));
-        shapes.add(new TangramShape(P1, Color.CYAN));*/
+        shapes.add(new TangramShape(P1, Color.CYAN));
 
-        shapes.add(new TangramShape(D1, Color.GRAY));
+ /*        shapes.add(new TangramShape(D1, Color.GRAY));
         shapes.add(new TangramShape(D2, Color.GRAY));
         shapes.add(new TangramShape(D3, Color.GRAY));
-        shapes.add(new TangramShape(D4, Color.GRAY));
+          shapes.add(new TangramShape(D4, Color.GRAY));
         shapes.add(new TangramShape(D5, Color.GRAY));
         shapes.add(new TangramShape(Q1, Color.GRAY));
         shapes.add(new TangramShape(P1, Color.GRAY));
-    /*
+/*
 
         //shapes2
         shapes2.add(new TangramShape(SD1, Color.GRAY));
@@ -153,98 +153,7 @@ public class TangramGame extends JFrame{
         uiElements.add(new UiElement(sidebarRight, Color.lightGray));
     }
 
-    public Polygon generateRegularPolygon(int numVertices, int radius, int centerX, int centerY) {
-        int[] xpoints = new int[numVertices];
-        int[] ypoints = new int[numVertices];
 
-        for (int i = 0; i < numVertices; i++) {
-            double angle = 2 * Math.PI * i / numVertices;
-            xpoints[i] = centerX + (int) (radius * Math.cos(angle));
-            ypoints[i] = centerY + (int) (radius * Math.sin(angle));
-        }
-
-        return new Polygon(xpoints, ypoints, numVertices);
-    }
-
-    public List<Polygon> breakIntoTriangles(Polygon polygon) {
-        List<Polygon> triangles = new ArrayList<>();
-
-        for (int i = 0; i < polygon.npoints; i++) {
-            int nextIndex = (i + 1) % polygon.npoints;
-            int prevIndex = (i - 1 + polygon.npoints) % polygon.npoints;
-
-            for (int j = 0; j < polygon.npoints; j++) {
-                if (j != i && j != nextIndex && j != prevIndex) {
-                    triangles.add(new Polygon(
-                            new int[]{polygon.xpoints[i], polygon.xpoints[nextIndex], polygon.xpoints[j]},
-                            new int[]{polygon.ypoints[i], polygon.ypoints[nextIndex], polygon.ypoints[j]},
-                            3));
-                }
-            }
-        }
-
-        return triangles;
-    }
-
-    public List<Polygon> breakIntoQuadrilaterals(Polygon polygon) {
-        List<Polygon> quadrilaterals = new ArrayList<>();
-
-        for (int i = 0; i < polygon.npoints; i++) {
-            int nextIndex = (i + 1) % polygon.npoints;
-            int prevIndex = (i - 1 + polygon.npoints) % polygon.npoints;
-
-            for (int j = 0; j < polygon.npoints; j++) {
-                if (j != i && j != nextIndex && j != prevIndex) {
-                    for (int k = 0; k < polygon.npoints; k++) {
-                        if (k != i && k != j && k != nextIndex && k != prevIndex) {
-                            for (int l = 0; l < polygon.npoints; l++) {
-                                if (l != i && l != j && l != k && l != nextIndex && l != prevIndex) {
-                                    quadrilaterals.add(new Polygon(
-                                            new int[]{polygon.xpoints[i], polygon.xpoints[nextIndex], polygon.xpoints[j], polygon.xpoints[k], polygon.xpoints[l]},
-                                            new int[]{polygon.ypoints[i], polygon.ypoints[nextIndex], polygon.ypoints[j], polygon.ypoints[k], polygon.ypoints[l]},
-                                            5));
-                                }
-                            }
-                        }
-                    }
-                }
-            }
-        }
-
-        return quadrilaterals;
-    }
-
-    public List<Point> crossPoints(Polygon polygon1, Line2D line) {
-        List<Point> crossPoints = new ArrayList<>();
-        List<Line2D> edges = getEdges(polygon1);
-        for (int i = 0; i < edges.size(); i++) {
-            if (edges.get(i).intersectsLine(line)) {
-                crossPoints.add(new Point((int) edges.get(i).getX1(), (int) edges.get(i).getY1()));
-                crossPoints.add(new Point((int) edges.get(i).getX2(), (int) edges.get(i).getY2()));
-            }
-        }
-        return crossPoints;
-    }
-
-    public  List<Point> polygonPointsAboveLine(Polygon polygon, Line2D line) {
-        List<Point> points = new ArrayList<>();
-        for (int i = 0; i < polygon.npoints; i++) {
-            if (line.relativeCCW(polygon.xpoints[i], polygon.ypoints[i]) == 1) {
-                points.add(new Point(polygon.xpoints[i], polygon.ypoints[i]));
-            }
-        }
-        return points;
-    }
-
-    public List<Point> polygonPointsBelowLine(Polygon polygon, Line2D line) {
-        List<Point> points = new ArrayList<>();
-        for (int i = 0; i < polygon.npoints; i++) {
-            if (line.relativeCCW(polygon.xpoints[i], polygon.ypoints[i]) == -1) {
-                points.add(new Point(polygon.xpoints[i], polygon.ypoints[i]));
-            }
-        }
-        return points;
-    }
 
     public static void isSolved() {
         boolean solved = false;
