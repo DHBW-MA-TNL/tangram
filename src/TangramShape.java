@@ -1,4 +1,6 @@
 import java.awt.*;
+import java.awt.geom.Line2D;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Vector;
 
@@ -6,12 +8,25 @@ public class TangramShape {
     public Polygon shape;
     public Color color;
     public List<Point> points = new Vector<>();
+    public List<Line2D> edges = new ArrayList<>();
 
     public TangramShape(Polygon shape, Color color) {
         this.shape = shape;
         this.color = color;
         setPoints();
+        this.edges = getEdges();
 
+    }
+
+    public List<Line2D> getEdges() {
+        List<Line2D> edges = new ArrayList<>();
+
+        for (int i = 0; i < this.shape.npoints; i++) {
+            int nextIndex = (i + 1) % this.shape.npoints; // Get the next index (loop back to 0 if at the end)
+            edges.add(new Line2D.Double(this.shape.xpoints[i], this.shape.ypoints[i], this.shape.xpoints[nextIndex], this.shape.ypoints[nextIndex]));
+        }
+
+        return edges;
     }
 
 
@@ -222,8 +237,51 @@ public class TangramShape {
         return that.shape.contains(x, y);
     }
 
+    public int  sharedEdges(TangramShape that) {
+        int count = 0;
+        for (Line2D edge : this.getEdges()) {
+            for (Line2D thatEdge : that.getEdges()) {
+                if (edge.intersectsLine(thatEdge)) {
+                    count++;
+                }
+            }
+        }
+        return count;
+    }
+
+    public int sameEdges(TangramShape that) {
+        int count = 0;
+        for (Line2D edge : this.getEdges()) {
+            for (Line2D thatEdge : that.getEdges()) {
+                if (edge.getP1().equals(thatEdge.getP1()) && edge.getP2().equals(thatEdge.getP2())) {
+                    count++;
+                }
+            }
+        }
+        return count;
+    }
 
 
+    public List<Point> insidePoints() {
+        // Get all points inside the shape
+        List<Point> insidePoints = new ArrayList<>();
+        for (int x = shape.getBounds().x; x < shape.getBounds().x + shape.getBounds().width; x++) {
+            for (int y = shape.getBounds().y; y < shape.getBounds().y + shape.getBounds().height; y++) {
+                if (shape.contains(x, y)) {
+                    insidePoints.add(new Point(x, y));
+                }
+            }
+        }
+        return insidePoints;
+    }
 
+    public boolean collidesWith(TangramShape that) {
+        for (int i = 0; i < this.shape.npoints; i++) {
+            if (that.shape.contains(this.shape.xpoints[i], this.shape.ypoints[i])) {
+                return true;
+            }
+        }
+        return false;
+    }
 
 }

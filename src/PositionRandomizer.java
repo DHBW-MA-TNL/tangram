@@ -42,11 +42,14 @@ public class PositionRandomizer {
 
 
                     for (int i=0; i<=8; i++) {
-                        if (current.overlaps(shape) ||  current.vertexInCommon(shape) >1 || current.isInside(shape) || current.touches(shape) || current.centerPointInside(shape)){
+                        if (current.overlaps(shape) ||  current.vertexInCommon(shape) >1 || current.isInside(shape) || current.touches(shape) || current.centerPointInside(shape) || current.sharedEdges(shape) >1
+                        || current.sameEdges(shape)>1 || !pointsInsidePolygon(current.insidePoints(), shape.shape) || current.collidesWith(shape)){
                             System.out.println(current.color.toString() + " overlaps with " + shape.color.toString() );
                             current.rotateAroundPoint(point, 45);
+                            current.edges=current.getEdges();
                         }else {
                             System.out.println(current.color.toString()  +" " +current.vertexInCommon(shape)+"  with " + shape.color.toString() +" ");
+                            System.out.println(current.color.toString() + " "+ current.sharedEdges(shape) +"overlapping edges"+ shape.color.toString() );
                             overlaps = false;
                             break;
                         }
@@ -73,5 +76,14 @@ public class PositionRandomizer {
 
         used.add(unused.remove(0));
         return shufflePolygons(unused, used, next.x, next.y, vertices);
+    }
+
+    public static boolean pointsInsidePolygon(List<Point> pointsA, Polygon polygon) {
+        for (Point point : pointsA) {
+            if (!polygon.contains(point)) {
+                return false;
+            }
+        }
+        return true;
     }
 }

@@ -50,30 +50,8 @@ public class TangramGame extends JFrame{
         });
     }
 
-    public static List<Line2D> getEdges(Polygon polygon) {
-        List<Line2D> edges = new ArrayList<>();
 
-        for (int i = 0; i < polygon.npoints; i++) {
-            int nextIndex = (i + 1) % polygon.npoints; // Get the next index (loop back to 0 if at the end)
-            edges.add(new Line2D.Double(polygon.xpoints[i], polygon.ypoints[i], polygon.xpoints[nextIndex], polygon.ypoints[nextIndex]));
-        }
 
-        return edges;
-    }
-
-    public static void touches(){
-
-        List<Line2D> edgesA = getEdges(shapes.get(0).shape);
-        List<Line2D> edgesB = getEdges(shapes.get(1).shape);
-
-        for (int i = 0; i < edgesA.size(); i++) {
-            for (int j = 0; j < edgesB.size(); j++) {
-                if (edgesA.get(i).intersectsLine(edgesB.get(j))) {
-                    System.out.println("Intersecting");
-                }
-            }
-        }
-    }
 
     public static Polygon multiplyPolygon(Polygon polygon, int multiplier) {
         int[] xpoints = new int[polygon.npoints];

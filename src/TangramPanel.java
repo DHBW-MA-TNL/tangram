@@ -119,7 +119,6 @@ public class TangramPanel extends JPanel implements MouseListener, MouseMotionLi
             }
 
             repaint();
-            TangramGame.touches();
 
 
         }
