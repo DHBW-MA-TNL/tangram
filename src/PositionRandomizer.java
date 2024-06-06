@@ -1,4 +1,5 @@
 import java.awt.*;
+import java.awt.geom.Line2D;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -43,7 +44,8 @@ public class PositionRandomizer {
 
                     for (int i=0; i<=8; i++) {
                         if (current.overlaps(shape) ||  current.vertexInCommon(shape) >1 || current.isInside(shape) || current.touches(shape) || current.centerPointInside(shape) || current.sharedEdges(shape) >1
-                        || current.sameEdges(shape)>1 || !pointsInsidePolygon(current.insidePoints(), shape.shape) || current.collidesWith(shape)){
+                        || current.sameEdges(shape)>1 || !pointsInsidePolygon(current.insidePoints(), shape.shape) || current.collidesWith(shape)
+                        || current.pointsOnEdges(shape)>1 || shape.pointsOnEdges(current)>1 || current.crossesEdges(shape)) {
                             System.out.println(current.color.toString() + " overlaps with " + shape.color.toString() );
                             current.rotateAroundPoint(point, 45);
                             current.edges=current.getEdges();
@@ -61,6 +63,7 @@ public class PositionRandomizer {
 
                 }
                 if (!overlaps) {
+                    vertices.remove(point);
                     break;
                 }
 
@@ -86,4 +89,9 @@ public class PositionRandomizer {
         }
         return true;
     }
+
+    public boolean pointOnLine(Line2D line, Point point) {
+        return line.ptLineDist(point) < 1;
+    }
+
 }

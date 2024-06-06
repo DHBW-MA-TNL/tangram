@@ -284,4 +284,34 @@ public class TangramShape {
         return false;
     }
 
+    public void setEdges() {
+            this.edges = getEdges();
+    }
+
+        public int pointsOnEdges(TangramShape that) {
+            int count = 0;
+            setEdges();
+            that.setEdges();
+            for (Point point : this.points) {
+                for (Line2D edge : that.edges) {
+                    if (edge.ptLineDist(point) < 1) {
+                        count++;
+                    }
+                }
+
+            }
+            return count;
+        }
+
+        public boolean crossesEdges(TangramShape that) {
+            for (Line2D edge : this.edges) {
+                for (Line2D thatEdge : that.edges) {
+                    if (edge.intersectsLine(thatEdge)) {
+                        return true;
+                    }
+                }
+            }
+            return false;
+        }
+
 }
