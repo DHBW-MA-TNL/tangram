@@ -1,6 +1,7 @@
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.*;
+import java.awt.geom.Line2D;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -95,6 +96,7 @@ public class TangramPanel extends JPanel implements MouseListener, MouseMotionLi
             int dy = e.getY() - initialMousePos.y;
             selectedShape.move(dx, dy);
             initialMousePos = e.getPoint();
+            selectedShape.setEdges();
             repaint();
         }
 
@@ -157,11 +159,11 @@ private class KeyPress extends KeyAdapter {
 
             case KeyEvent.VK_S -> {
                 // Shuffle the shapes
-                if (selectedShape != null) {
+
                     List<TangramShape> shuffledShapes = PositionRandomizer.shufflePolygons(shapes, new ArrayList<>(), 100, 100);
                     shapes = shuffledShapes;
                     repaint();
-                }
+
             }
 
         }
@@ -179,6 +181,14 @@ private class KeyPress extends KeyAdapter {
 
                     repaint();
                 }
+            }
+            case KeyEvent.VK_I->{
+                TangramShape dis = shapes.get(0);
+                TangramShape dad = shapes.get(1);
+
+                System.out.println(dis.pointsOnOtherLines(dad));
+                repaint();
+
             }
 
         }

@@ -24,7 +24,7 @@ public class TangramGame extends JFrame{
         setUiElements();
         //TangramShape
         List<TangramShape> rndPos = PositionRandomizer.shufflePolygons(shapes, new ArrayList<>(), 300, 300);
-
+        //List<TangramShape> rndPos =shapes;
 
 
 
@@ -67,13 +67,21 @@ public class TangramGame extends JFrame{
 
     public static void defaultShapes(){
         int multiplier = 2; // Change this to your desired multiplier
-        Polygon D1 = multiplyPolygon(new Polygon(new int[]{0, 100, 50}, new int[]{0, 0, 50}, 3), multiplier);
+
+        //TEST SHAPES
+        Polygon TDL = multiplyPolygon(new Polygon(new int[]{200, 300, 400}, new int[]{200, 100, 200}, 3), 1);
+        Polygon TQL = multiplyPolygon(new Polygon(new int[]{250, 300, 350,300}, new int[]{150, 100, 150,200}, 4), 1);
+        //
+        Polygon D1 = multiplyPolygon(new Polygon(new int[]{100, 200, 150}, new int[]{100, 100, 150}, 3), 1);
+
+        //Polygon D1 = multiplyPolygon(new Polygon(new int[]{200, 400, 300}, new int[]{200, 200, 300}, 3), 1);
         Polygon D2 = multiplyPolygon(new Polygon(new int[]{100, 50, 100}, new int[]{0, 50, 100}, 3), multiplier);
         Polygon D3 = multiplyPolygon(new Polygon(new int[]{0, 25, 0}, new int[]{0, 25, 50}, 3), multiplier);
         Polygon D4 = multiplyPolygon(new Polygon(new int[]{50, 25, 75}, new int[]{50, 75, 75}, 3), multiplier);
         Polygon D5 = multiplyPolygon(new Polygon(new int[]{0, 0, 50}, new int[]{50, 100, 100}, 3), multiplier);
         Polygon Q1 = multiplyPolygon(new Polygon(new int[]{25, 50, 25, 0}, new int[]{25, 50, 75, 50}, 4), multiplier);
         Polygon P1 = multiplyPolygon(new Polygon(new int[]{25, 75, 100, 50}, new int[]{75, 75, 100, 100}, 4), multiplier);
+
 
         Polygon SD1 = multiplyPolygon(new Polygon(new int[]{0, 100, 50}, new int[]{0, 0, 50}, 3), multiplier);
         Polygon SD2 = multiplyPolygon(new Polygon(new int[]{100, 50, 100}, new int[]{0, 50, 100}, 3), multiplier);
@@ -84,17 +92,25 @@ public class TangramGame extends JFrame{
         Polygon SP1 = multiplyPolygon(new Polygon(new int[]{25, 75, 100, 50}, new int[]{75, 75, 100, 100}, 4), multiplier);*/
         //Polygon P2 = multiplyPolygon(new Polygon(new int[]{25, 75, 100, 50}, new int[]{75, 75, 100, 100}, 4), multiplier);
 
+      //  shapes.add(new TangramShape(D0,Color.BLUE));
+        //shapes.add(new TangramShape(D1,Color.RED));
 
-        //shapes
-       shapes.add(new TangramShape(D1, Color.BLUE));
+
+         shapes.add(new TangramShape(TDL, Color.BLUE));
+        shapes.add(new TangramShape(D1, Color.YELLOW));
+    /*    //shapes
+            shapes.add(new TangramShape(D1, Color.BLUE));
         shapes.add(new TangramShape(D2, Color.RED));
-         shapes.add(new TangramShape(D3, Color.GREEN));
+        shapes.add(new TangramShape(D3, Color.GREEN));
         shapes.add(new TangramShape(D4, Color.MAGENTA));
-      shapes.add(new TangramShape(D5, Color.ORANGE));
-       shapes.add(new TangramShape(Q1, Color.YELLOW));
+        shapes.add(new TangramShape(D5, Color.ORANGE));
+        shapes.add(new TangramShape(Q1, Color.YELLOW));
         shapes.add(new TangramShape(P1, Color.CYAN));
 
- /*        shapes.add(new TangramShape(D1, Color.GRAY));
+     */
+
+
+ /*       shapes.add(new TangramShape(D1, Color.GRAY));
         shapes.add(new TangramShape(D2, Color.GRAY));
         shapes.add(new TangramShape(D3, Color.GRAY));
           shapes.add(new TangramShape(D4, Color.GRAY));

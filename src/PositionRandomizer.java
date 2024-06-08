@@ -43,12 +43,11 @@ public class PositionRandomizer {
 
 
                     for (int i=0; i<=8; i++) {
-                        if (current.overlaps(shape) ||  current.vertexInCommon(shape) >1 || current.isInside(shape) || current.touches(shape) || current.centerPointInside(shape) || current.sharedEdges(shape) >1
-                        || current.sameEdges(shape)>1 || !pointsInsidePolygon(current.insidePoints(), shape.shape) || current.collidesWith(shape)
-                        || current.pointsOnEdges(shape)>1 || shape.pointsOnEdges(current)>1 || current.crossesEdges(shape)) {
+                        if (current.crossesEdges(shape)) {
+                            current.setEdges();
                             System.out.println(current.color.toString() + " overlaps with " + shape.color.toString() );
                             current.rotateAroundPoint(point, 45);
-                            current.edges=current.getEdges();
+                            current.setEdges();
                         }else {
                             System.out.println(current.color.toString()  +" " +current.vertexInCommon(shape)+"  with " + shape.color.toString() +" ");
                             System.out.println(current.color.toString() + " "+ current.sharedEdges(shape) +"overlapping edges"+ shape.color.toString() );

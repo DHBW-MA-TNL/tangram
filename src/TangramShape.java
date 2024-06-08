@@ -154,6 +154,7 @@ public class TangramShape {
             this.shape.xpoints[i] = p.x + (int) Math.round(dx * cos - dy * sin);
             this.shape.ypoints[i] = p.y + (int) Math.round(dx * sin + dy * cos);
         }
+        setEdges();
     }
 
     public boolean overlaps(TangramShape that) {
@@ -175,6 +176,7 @@ public class TangramShape {
         int dy = targetPoint.y - this.shape.ypoints[npoint];
 
         this.shape.translate(dx, dy);
+        this.setEdges();
     }
 
     public void alignNPointToPoint(int n, Point p) {
@@ -185,6 +187,7 @@ public class TangramShape {
             this.shape.xpoints[i] += dx;
             this.shape.ypoints[i] += dy;
         }
+        setEdges();
     }
 
     public boolean onlyVertexInCommon(TangramShape that) {
@@ -304,14 +307,48 @@ public class TangramShape {
         }
 
         public boolean crossesEdges(TangramShape that) {
+        setEdges();
+        int counter =0;
             for (Line2D edge : this.edges) {
                 for (Line2D thatEdge : that.edges) {
                     if (edge.intersectsLine(thatEdge)) {
-                        return true;
+                        counter++;
                     }
                 }
             }
-            return false;
+            System.out.println(counter);
+            if(counter == 2 || counter >=3){
+                return  true;
+            }else{
+                return false;
+            }
+
         }
+
+        public boolean pointsOnOtherLines(TangramShape that){
+            setEdges();
+            int counter =0;
+            setPoints();
+            for (Point point : this.points){
+                for (Line2D line: that.getEdges()){
+                    System.out.println(line.ptLineDist(point));
+                    if(line.ptLineDist(point) ==0.0){
+                        System.out.println(line.toString());
+                        counter++;
+                    }
+                }
+            }
+            System.out.println(counter);
+            if(counter >=3){
+                return  true;
+            }else{
+                return false;
+            }
+        }
+
+
+
+
+
 
 }
