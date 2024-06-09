@@ -135,7 +135,7 @@ public class TangramShape {
 
     public double distanceTo(TangramShape that) {
         double distance = 0;
-        for (int i = 0; i < this.shape.npoints; i++) {
+        for (int i = 0; i < this.shape.npoints-1; i++) {
             distance += Math.sqrt(Math.pow(this.shape.xpoints[i] - that.shape.xpoints[i], 2) + Math.pow(this.shape.ypoints[i] - that.shape.ypoints[i], 2));
         }
         System.out.println("distance = " + distance);

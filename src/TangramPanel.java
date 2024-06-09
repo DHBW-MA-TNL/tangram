@@ -8,13 +8,13 @@ import java.util.List;
 
 public class TangramPanel extends JPanel implements MouseListener, MouseMotionListener {
     List<TangramShape> shapes;
-    private TangramShape[] shapes2;
+    private List<TangramShape> shapes2;
     private TangramShape selectedShape = null;
     private UiElement[] uiElements;
     private Point initialMousePos;
 
 
-    public TangramPanel(List<TangramShape> shapes, UiElement[]  uiElements, TangramShape[] shapes2) {
+    public TangramPanel(List<TangramShape> shapes, UiElement[]  uiElements, List<TangramShape> shapes2) {
         this.shapes = shapes;
         this.shapes2 = shapes2;
         this.uiElements = uiElements;
@@ -30,15 +30,17 @@ public class TangramPanel extends JPanel implements MouseListener, MouseMotionLi
     @Override
     protected void paintComponent(Graphics g) {
         super.paintComponent(g);
+        for (UiElement uiElement : uiElements) {
+            uiElement.draw(g);
+        }
+
         for (TangramShape shape : shapes2) {
             shape.draw(g);
         }
         for (TangramShape shape : shapes) {
             shape.draw(g);
         }
-        for (UiElement uiElement : uiElements) {
-            uiElement.draw(g);
-        }
+
 
     }
 
@@ -67,8 +69,8 @@ public class TangramPanel extends JPanel implements MouseListener, MouseMotionLi
                 for (TangramShape shape2 : shapes2) {
                     if (selectedShape.isCloseTo(shape2)) {
                         System.out.println("Close to shape2");
-                        selectedShape.shape.xpoints = shape2.shape.xpoints;
-                        selectedShape.shape.ypoints = shape2.shape.ypoints;
+                        selectedShape.shape.xpoints = shape.shape.xpoints;
+                        selectedShape.shape.ypoints = shape.shape.ypoints;
                         repaint();
                     }
                 }
@@ -97,6 +99,7 @@ public class TangramPanel extends JPanel implements MouseListener, MouseMotionLi
             selectedShape.move(dx, dy);
             initialMousePos = e.getPoint();
             selectedShape.setEdges();
+            selectedShape.setPoints();
             repaint();
         }
 
@@ -119,6 +122,8 @@ public class TangramPanel extends JPanel implements MouseListener, MouseMotionLi
                 // Move the shape by the calculated difference
                 selectedShape.move(new Point(dx, dy));
             }
+
+
 
             repaint();
 
@@ -146,7 +151,7 @@ private class KeyPress extends KeyAdapter {
                 }
             }
             case KeyEvent.VK_SPACE -> {
-                TangramGame.isSolved();
+                TangramGame.isSolved(shapes);
             }
             case KeyEvent.VK_F -> {
                 // Flip the selected shape
@@ -189,6 +194,13 @@ private class KeyPress extends KeyAdapter {
                 System.out.println(dis.pointsOnOtherLines(dad));
                 repaint();
 
+            }
+            case KeyEvent.VK_P -> {
+                if (selectedShape != null) {
+                    System.out.println(selectedShape.points);
+
+                    repaint();
+                }
             }
 
         }
