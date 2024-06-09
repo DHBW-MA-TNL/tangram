@@ -29,7 +29,11 @@ public class TangramGame extends JFrame {
         //List<TangramShape> rndPos =shapes;
 
 
-        add(new TangramPanel(coloredShapes, uiElements.toArray(new UiElement[0]), rndPos));
+        add(new TangramPanel(
+                coloredShapes,
+                uiElements.toArray(new UiElement[0]),
+                rndPos
+        ));
 
         addComponentListener(new ComponentAdapter() {
                                  @Override

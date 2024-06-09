@@ -7,16 +7,16 @@ import java.util.Arrays;
 import java.util.List;
 
 public class TangramPanel extends JPanel implements MouseListener, MouseMotionListener {
-    List<TangramShape> shapes;
-    private List<TangramShape> shapes2;
+    List<TangramShape> shuffled;
+    private List<TangramShape> coloredShapes;
     private TangramShape selectedShape = null;
     private UiElement[] uiElements;
     private Point initialMousePos;
 
 
-    public TangramPanel(List<TangramShape> shapes, UiElement[]  uiElements, List<TangramShape> shapes2) {
-        this.shapes = shapes;
-        this.shapes2 = shapes2;
+    public TangramPanel(List<TangramShape> coloredShapes, UiElement[]  uiElements, List<TangramShape> shuffled) {
+        this.shuffled = shuffled;
+        this.coloredShapes = coloredShapes;
         this.uiElements = uiElements;
         addMouseListener(this);
         addMouseMotionListener(this);
@@ -33,13 +33,13 @@ public class TangramPanel extends JPanel implements MouseListener, MouseMotionLi
         for (UiElement uiElement : uiElements) {
             uiElement.draw(g);
         }
+        for (TangramShape shape : shuffled) {
+            shape.draw(g);
+        }
+        for (TangramShape shape : coloredShapes) {
+            shape.draw(g);
+        }
 
-        for (TangramShape shape : shapes2) {
-            shape.draw(g);
-        }
-        for (TangramShape shape : shapes) {
-            shape.draw(g);
-        }
 
 
     }
@@ -52,7 +52,7 @@ public class TangramPanel extends JPanel implements MouseListener, MouseMotionLi
 
     @Override
     public void mousePressed(MouseEvent e) {
-        for (TangramShape shape : shapes) {
+        for (TangramShape shape : coloredShapes) {
             if (shape.shape.contains(e.getPoint())) {
                 selectedShape = shape;
                 initialMousePos = e.getPoint();
@@ -65,8 +65,8 @@ public class TangramPanel extends JPanel implements MouseListener, MouseMotionLi
     public void mouseReleased(MouseEvent e) {
         if (selectedShape != null) {
             System.out.println("Dropping shape");
-            for (TangramShape shape : shapes) {
-                for (TangramShape shape2 : shapes2) {
+            for (TangramShape shape : shuffled) {
+                for (TangramShape shape2 : coloredShapes) {
                     if (selectedShape.isCloseTo(shape2)) {
                         System.out.println("Close to shape2");
                         selectedShape.shape.xpoints = shape.shape.xpoints;
@@ -151,7 +151,7 @@ private class KeyPress extends KeyAdapter {
                 }
             }
             case KeyEvent.VK_SPACE -> {
-                TangramGame.isSolved(shapes);
+                TangramGame.isSolved(shuffled);
             }
             case KeyEvent.VK_F -> {
                 // Flip the selected shape
@@ -165,8 +165,8 @@ private class KeyPress extends KeyAdapter {
             case KeyEvent.VK_S -> {
                 // Shuffle the shapes
 
-                    List<TangramShape> shuffledShapes = PositionRandomizer.shufflePolygons(shapes, new ArrayList<>(), 100, 100);
-                    shapes = shuffledShapes;
+                    List<TangramShape> shuffledShapes = PositionRandomizer.shufflePolygons(shuffled, new ArrayList<>(), 100, 100);
+                shuffled = shuffledShapes;
                     repaint();
 
             }
@@ -188,8 +188,8 @@ private class KeyPress extends KeyAdapter {
                 }
             }
             case KeyEvent.VK_I->{
-                TangramShape dis = shapes.get(0);
-                TangramShape dad = shapes.get(1);
+                TangramShape dis = shuffled.get(0);
+                TangramShape dad = shuffled.get(1);
 
                 System.out.println(dis.pointsOnOtherLines(dad));
                 repaint();
