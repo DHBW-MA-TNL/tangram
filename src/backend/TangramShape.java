@@ -2,6 +2,7 @@ package backend;
 
 import java.awt.*;
 import java.awt.geom.Line2D;
+import java.io.Console;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Vector;
@@ -96,16 +97,20 @@ public class TangramShape {
     }
 
     public boolean isCloseTo(TangramShape that) {
+        boolean close = false;
         if (this.shape.npoints == that.shape.npoints) {
             for (int i = 0; i < this.shape.npoints; i++) {
-                if (Math.abs(this.distanceTo(that)) < 25) {
-                    if (this.getSize() == that.getSize()) {
-                        return true;
-                    }
+                System.out.println(this.getSize() - that.getSize());
+                if (!(Math.abs(this.distanceTo(that)) < 50)) {
+                    close=false;
+                    break;
+                }
+                else {
+                    close= true;
                 }
             }
         }
-        return false;
+        return close;
     }
 
     public boolean samePosition(TangramShape that) {
@@ -154,7 +159,7 @@ public class TangramShape {
         return distance;
     }
 
-    public void rotateAroundPoint(Point p, double angle) {
+    public void rotateAroundPoint(Point p, int angle) {
         double rad = Math.toRadians(angle);
         double cos = Math.cos(rad);
         double sin = Math.sin(rad);

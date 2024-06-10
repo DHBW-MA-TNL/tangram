@@ -23,7 +23,7 @@ public class PuzzleSource{
 
         puzzleSrc.add(new TangramShape(SD1, Color.BLUE));
         puzzleSrc.add(new TangramShape(SD2, Color.RED));
-        puzzleSrc.add(new TangramShape(SD3, Color.GREEN));
+      puzzleSrc.add(new TangramShape(SD3, Color.GREEN));
         puzzleSrc.add(new TangramShape(SD4, Color.MAGENTA));
         puzzleSrc.add(new TangramShape(SD5, Color.ORANGE));
         puzzleSrc.add(new TangramShape(SQ1, Color.YELLOW));

@@ -70,16 +70,23 @@ public class TangramPanel extends JPanel implements MouseListener, MouseMotionLi
 
     public void gravity(List<TangramShape> puzzle, List<TangramShape> sol) {
         for (TangramShape shape : puzzle) {
-            for (TangramShape shape2 : sol) {
-                if (shape2.isCloseTo(shape)) {
-                    System.out.println("Close to shape2");
-                    shape2.shape.xpoints = shape.shape.xpoints;
-                    shape2.shape.ypoints = shape.shape.ypoints;
-                    shape.setSolvedPos(true);
-                    shape2.setSolvedPos(true);
-                    repaint();
-                }
+            if(!shape.isSolved()) {
+                for (TangramShape shape2 : sol) {
+                    if(!shape2.isSolved()){
+                    if (shape2.isCloseTo(shape)) {
+                        System.out.println("Close to shape2");
+                        shape2.shape.xpoints = shape.shape.xpoints;
+                        shape2.shape.ypoints = shape.shape.ypoints;
+                        shape.setEdges();
+                        shape2.setEdges();
+                        shape.setPoints();
+                        shape2.setPoints();
+                        shape.setSolvedPos(true);
+                        shape2.setSolvedPos(true);
+                        repaint();
+                    }
 
+                }}
             }
         }
     }
