@@ -1,3 +1,5 @@
+package backend;
+
 import java.awt.*;
 import java.util.List;
 import java.util.Vector;
@@ -23,7 +25,7 @@ public class TangramShape {
     }
 
     public String toString() {
-        return "TangramShape{" +
+        return "backend.TangramShape{" +
                 "shape=" + shape +
                 ", color=" + color +
                 "coordinates=" + shape.getBounds() +

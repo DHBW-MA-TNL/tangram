@@ -1,8 +1,12 @@
+package frontend;
+
+import backend.PositionRandomizer;
+import backend.TangramShape;
+
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.*;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 
 public class TangramPanel extends JPanel implements MouseListener, MouseMotionListener {

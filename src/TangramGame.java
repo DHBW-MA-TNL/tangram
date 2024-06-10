@@ -1,3 +1,8 @@
+import backend.PositionRandomizer;
+import backend.TangramShape;
+import frontend.TangramPanel;
+import frontend.UiElement;
+
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ComponentAdapter;
@@ -22,7 +27,7 @@ public class TangramGame extends JFrame{
         setLocationRelativeTo(null);
         defaultShapes();
         setUiElements();
-        //TangramShape
+        //backend.TangramShape
         List<TangramShape> rndPos = PositionRandomizer.shufflePolygons(shapes, new ArrayList<>(), 300, 500);
 
 
@@ -108,13 +113,13 @@ public class TangramGame extends JFrame{
 
 
         //shapes
-/*        shapes.add(new TangramShape(D1, Color.BLUE));
-        shapes.add(new TangramShape(D2, Color.RED));
-         shapes.add(new TangramShape(D3, Color.GREEN));
-        shapes.add(new TangramShape(D4, Color.MAGENTA));
-      shapes.add(new TangramShape(D5, Color.ORANGE));
-       shapes.add(new TangramShape(Q1, Color.YELLOW));
-        shapes.add(new TangramShape(P1, Color.CYAN));*/
+/*        shapes.add(new backend.TangramShape(D1, Color.BLUE));
+        shapes.add(new backend.TangramShape(D2, Color.RED));
+         shapes.add(new backend.TangramShape(D3, Color.GREEN));
+        shapes.add(new backend.TangramShape(D4, Color.MAGENTA));
+      shapes.add(new backend.TangramShape(D5, Color.ORANGE));
+       shapes.add(new backend.TangramShape(Q1, Color.YELLOW));
+        shapes.add(new backend.TangramShape(P1, Color.CYAN));*/
 
         shapes.add(new TangramShape(D1, Color.GRAY));
         shapes.add(new TangramShape(D2, Color.GRAY));
@@ -126,13 +131,13 @@ public class TangramGame extends JFrame{
     /*
 
         //shapes2
-        shapes2.add(new TangramShape(SD1, Color.GRAY));
-        shapes2.add(new TangramShape(SD2, Color.GRAY));
-     shapes2.add(new TangramShape(SD3, Color.GRAY));
-        shapes2.add(new TangramShape(SD4, Color.GRAY));
-        shapes2.add(new TangramShape(SD5, Color.GRAY));
-        shapes2.add(new TangramShape(SQ1, Color.GRAY));
-        shapes2.add(new TangramShape(SP1, Color.GRAY));*/
+        shapes2.add(new backend.TangramShape(SD1, Color.GRAY));
+        shapes2.add(new backend.TangramShape(SD2, Color.GRAY));
+     shapes2.add(new backend.TangramShape(SD3, Color.GRAY));
+        shapes2.add(new backend.TangramShape(SD4, Color.GRAY));
+        shapes2.add(new backend.TangramShape(SD5, Color.GRAY));
+        shapes2.add(new backend.TangramShape(SQ1, Color.GRAY));
+        shapes2.add(new backend.TangramShape(SP1, Color.GRAY));*/
 
         //move shapes 2 aside
         for (TangramShape shape : shapes2) {
