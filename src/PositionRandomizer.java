@@ -1,8 +1,8 @@
+import javax.swing.plaf.IconUIResource;
 import java.awt.*;
-import java.util.ArrayList;
-import java.util.Arrays;
+import java.awt.geom.Area;
+import java.util.*;
 import java.util.List;
-import java.util.Random;
 
 public class PositionRandomizer {
     private static final Random random = new Random();
@@ -21,65 +21,86 @@ public class PositionRandomizer {
         return shufflePolygons(unused, used, px, py, new ArrayList<>());
     }
 
-    public static List<TangramShape> shufflePolygons(List<TangramShape> unused, List<TangramShape> used, int px, int py, List<Point> vertices) {
-        if (unused.isEmpty()) {
-            return used;
-        }
-        Point start = new Point(px, py);
-        TangramShape current = unused.get(0);
-        current.alignNPointToPoint(0, start);
-        int randomNPoint = random.nextInt(current.shape.npoints);
-
-        System.out.println("In der Methode");
-
-
-        Point next = new Point(current.shape.xpoints[randomNPoint], current.shape.ypoints[randomNPoint]);
-
-        List<Point> newVertices = new ArrayList<>();
-        List<Shape> newUsedList = new ArrayList<>();
-        if (vertices.size() == 0) {
-            for (int j = 0; j < current.shape.npoints; j++) {
-                if (j != randomNPoint) {
-                    vertices.add(new Point(current.shape.xpoints[j], current.shape.ypoints[j]));
-                }
-            }
-            newVertices = vertices;
+    public static String getColorName(Color color) {
+        if (color.equals(Color.BLUE)) {
+            return "Blau";
+        } else if (color.equals(Color.RED)) {
+            return "Rot";
+        } else if (color.equals(Color.GREEN)) {
+            return "Grün";
+        } else if (color.equals(Color.MAGENTA)) {
+            return "Magenta";
+        } else if (color.equals(Color.ORANGE)) {
+            return "Orange";
+        } else if (color.equals(Color.YELLOW)) {
+            return "Gelb";
+        } else if (color.equals(Color.CYAN)) {
+            return "Cyan";
         } else {
+            return "Unbekannt"; // Wenn keine passende Farbbezeichnung gefunden wird
+        }
+    }
 
-
-            boolean intersects = false;
-            if (!used.isEmpty()) {
-                System.out.println("In der If");
-                System.out.println("---------------" + vertices.size());
-                for (Point vertex : vertices) {
-                    System.out.println("In der For-1");
-                    for (TangramShape shape : used) {
-                        System.out.println("In der For-2");
-                        for (int i = 0; i < 8; i++) {
-                            System.out.println("In der For-3");
-                            if (TangramGame.getEdges(shape.shape).stream().anyMatch(edge -> edge.intersectsLine(vertex.x, vertex.y, next.x, next.y))) {
-                                System.out.println("----------" + i + " mal gedreht----------------");
-                                for (int j = 0; j < current.shape.npoints; j++) {
-                                    if (j != randomNPoint) {
-                                        newVertices.add(new Point(current.shape.xpoints[j], current.shape.ypoints[j]));
-                                    }
-                                }
-                                System.out.println("Ja");
-                                break;
-                            } else {
-                                current.rotateAroundPoint(start, 45);
-                                System.out.println(i + " mal rotiert");
-                            }
-                        }
-                    }
-                    System.out.println("aligning to point: " + vertex);
-                    current.alignNPointToPoint(randomNPoint, vertex);
-                }
-
+    public static boolean polygonsIntersect(TangramShape current, List<TangramShape> used) {
+        Area area1 = new Area(current.shape);
+        for (TangramShape usedShape : used) {
+            Area area2 = new Area(usedShape.shape);
+            if (area1.intersects(area2.getBounds2D())) {
+                return true; // Wenn sich die Bereiche überschneiden, gibt es eine Überlappung
             }
         }
-        used.add(unused.remove(0));
-        System.out.println("used size: " + used.size());
-        return shufflePolygons(unused, used, next.x, next.y, newVertices);
+        return false; // Keine Überlappung gefunden
+    }
+
+    public static List<TangramShape> shufflePolygons(List<TangramShape> unusedList, List<TangramShape> usedList, int px, int py, List<Point> vertices) {
+        //Rekursion soll enden, wenn die Liste der bisher noch nicht platzierten Figuren leer ist
+        if (unusedList.isEmpty()) {
+            return usedList;
+        }
+
+        //Für mehr Variation soll die Liste der bisher noch nicht platzierten Elemente und die der verwendeten Punkte bei jedem Aufruf gemischt werden
+        Collections.shuffle(unusedList);
+        Collections.shuffle(vertices);
+
+        //Setze Werte für die aktuelle Figur
+        Point start = new Point(px, py);
+        TangramShape current = unusedList.get(0);
+        current.alignNPointToPoint(0, start);
+        int rdmNPoint = random.nextInt(current.shape.npoints);
+
+        //Im allerersten Durchlauf gibt es noch keine Punkte an die angesetzt werden kann
+        if (!usedList.isEmpty()) {
+            boolean overlaps = true;
+
+            // Iteriere über alle Punkte und versuche dort anzulegen
+            for (Point point : vertices) {
+                // Platziere die aktuelle Figur mit einer zufälligen Ecke an diesen Punkt
+                current.alignNPointToPoint(rdmNPoint, point);
+
+                // Sollte die Figur an die aktuelle Stelle nicht passen, da sie sich mit anderen überlappen würde, so drehe sie so lange im Kreis, bis sie um 360° gedreht wurde
+                for (int i = 0; i < 8; i++) { // 8 Versuche mit 45°
+                    if (polygonsIntersect(current, usedList)) {
+                        current.rotateAroundPoint(point, 45);
+                    } else {
+                        overlaps = false;
+                        break;
+                    }
+                }
+
+                if (!overlaps) {
+                    break;
+                }
+            }
+        }
+        for (int i = 0; i < current.shape.npoints; i++) {
+            vertices.add(new Point(current.shape.xpoints[i], current.shape.ypoints[i]));
+        }
+
+        Point next = vertices.get(random.nextInt(vertices.size()));
+
+        usedList.add(current);
+        unusedList.remove(current);
+
+        return shufflePolygons(unusedList, usedList, next.x, next.y, vertices);
     }
 }
