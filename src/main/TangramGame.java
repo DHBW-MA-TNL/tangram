@@ -1,3 +1,5 @@
+package main;
+
 import backend.PositionRandomizer;
 import backend.TangramShape;
 import frontend.Difficulty;
@@ -18,6 +20,7 @@ public class TangramGame extends JFrame {
     public static List<TangramShape> coloredShapes = new ArrayList<>();
     public static List<TangramShape> tmp = new ArrayList<>();
     public static Random random = new Random();
+    public static int score = 0;
 
     public TangramGame() {
         setTitle("Tangram Game");
@@ -57,6 +60,10 @@ public class TangramGame extends JFrame {
         });
     }
 
+    public static int addScore(int i){
+        score =score+i;
+        return score;
+    }
 
     public static Polygon multiplyPolygon(Polygon polygon, int multiplier) {
         int[] xpoints = new int[polygon.npoints];

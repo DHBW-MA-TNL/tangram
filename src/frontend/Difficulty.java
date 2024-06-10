@@ -55,15 +55,15 @@ public class Difficulty extends JPanel implements ActionListener {
         var orange_red = interpolateColor(orange, red, 0.5f);
 
         addButtonWithScale("Unerfahren", middleX - 2 * differX, middleY + 2 * differY,
-                Level.Difficulty.UNERFAHREN, green, green_yellow);
+                Level.Difficulty.UNERFAHREN, green, green_yellow,0);
         addButtonWithScale("Anfänger", middleX - differX, middleY + differY,
-                Level.Difficulty.ANFAENGER, green_yellow, yellow);
+                Level.Difficulty.ANFAENGER, green_yellow, yellow,1);
         addButtonWithScale("Fortgeschrittener", middleX, middleY,
-                Level.Difficulty.FORTGESCHRITTEN, yellow, orange);
+                Level.Difficulty.FORTGESCHRITTEN, yellow, orange,2);
         addButtonWithScale("Experte", middleX + differX, middleY - differY,
-                Level.Difficulty.EXPERTE, orange, orange_red);
+                Level.Difficulty.EXPERTE, orange, orange_red,3);
         addButtonWithScale("Profi", middleX + 2 * differX, middleY - 2 * differY,
-                Level.Difficulty.PROFI, orange_red, red);
+                Level.Difficulty.PROFI, orange_red, red,4);
 
 
         JLabel test = new JLabel();
@@ -84,7 +84,8 @@ public class Difficulty extends JPanel implements ActionListener {
     }
 
     private void addButtonWithScale(String text, int x, int y, Level.Difficulty selectedLevel,
-                                    Color startColor, Color endColor) {
+                                    Color startColor, Color endColor,
+                                    int lvl) {
         var button = new RoundButton(text);
         button.setBackground(Color.LIGHT_GRAY); // Setze die Hintergrundfarbe des Buttons
         button.setForeground(Color.BLACK); // Setze die Schriftfarbe des Buttons
@@ -95,7 +96,7 @@ public class Difficulty extends JPanel implements ActionListener {
                     System.out.println(level);
 
                     setVisible(false);
-                    getParent().add(new TangramPanel(new UiElement[]{}));
+                    getParent().add(new TangramPanel(new UiElement[]{},lvl));
                     repaint();
                 }
         );

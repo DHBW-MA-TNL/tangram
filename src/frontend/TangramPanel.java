@@ -2,6 +2,8 @@ package frontend;
 
 import backend.PositionRandomizer;
 import backend.TangramShape;
+import cfg.Commons;
+import main.TangramGame;
 
 import javax.swing.*;
 import java.awt.*;
@@ -15,12 +17,14 @@ public class TangramPanel extends JPanel implements MouseListener, MouseMotionLi
     private TangramShape selectedShape = null;
     private UiElement[] uiElements;
     private Point initialMousePos;
+    int lvl;
 
 
-    public TangramPanel( UiElement[]  uiElements) {
-        this.levelShapes = new LevelShapes().getlevelShapes();
-        this.puzzleShapes = new PuzzleSource().getPuzzleShapes();
+    public TangramPanel(UiElement[]  uiElements, int lvl) {
+        this.levelShapes = new LevelShapes().getlevelShapes().subList(0,Commons.removeShapes[lvl]);
+        this.puzzleShapes = new PuzzleSource().getPuzzleShapes().subList(0,Commons.removeShapes[lvl]);
         this.uiElements = uiElements;
+        this.lvl = lvl;
 
         addMouseListener(this);
         addMouseMotionListener(this);
@@ -30,15 +34,27 @@ public class TangramPanel extends JPanel implements MouseListener, MouseMotionLi
         this.setFocusable(true);
         this.setRequestFocusEnabled(true);
 
-// some code here
+
+        List<TangramShape> shuffledShapes = PositionRandomizer.shufflePolygons(levelShapes, new ArrayList<>(), 300, 300);
+        levelShapes = shuffledShapes;
+        repaint();
 
     }
 
     public void init(){
-        this.levelShapes = new LevelShapes().getlevelShapes();
-        this.puzzleShapes = new PuzzleSource().getPuzzleShapes();
+        this.levelShapes = new LevelShapes().getlevelShapes().subList(0,Commons.removeShapes[lvl]);
+        this.puzzleShapes = new PuzzleSource().getPuzzleShapes().subList(0,Commons.removeShapes[lvl]);
         this.uiElements = uiElements;
+
+        List<TangramShape> shuffledShapes = PositionRandomizer.shufflePolygons(levelShapes, new ArrayList<>(), 300, 300);
+        levelShapes = shuffledShapes;
         repaint();
+    }
+
+    void drawStats(Graphics g){
+        g.setColor(Color.black);
+        g.drawString("Schwierigkeitsstufe: "+ lvl, 900,50);
+        g.drawString("Score: "+ TangramGame.score, 900, 60);
     }
 
 
@@ -64,6 +80,7 @@ public class TangramPanel extends JPanel implements MouseListener, MouseMotionLi
         }
         if(solved){
             System.out.println("Solved");
+            TangramGame.addScore(1);
         }
 
     }
@@ -108,6 +125,7 @@ public class TangramPanel extends JPanel implements MouseListener, MouseMotionLi
         }
         this.grabFocus();
 
+        drawStats(g);
 
 
     }

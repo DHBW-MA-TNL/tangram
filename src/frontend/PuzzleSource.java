@@ -8,7 +8,7 @@ import java.util.List;
 
 public class PuzzleSource{
     int vMover = 100;
-     int xMover = 700;
+     int xMover = 1050;
     public List<TangramShape> puzzleSrc= new ArrayList<>();
     public PuzzleSource(){
 
