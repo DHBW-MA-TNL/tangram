@@ -23,7 +23,7 @@ public class TangramGame extends JFrame{
         defaultShapes();
         setUiElements();
         //TangramShape
-        List<TangramShape> rndPos = PositionRandomizer.shufflePolygons(shapes, new ArrayList<>(), 100, 100);
+        List<TangramShape> rndPos = PositionRandomizer.shufflePolygons(shapes, new ArrayList<>(), 300, 500);
 
 
 
