@@ -212,7 +212,7 @@ private class KeyPress extends KeyAdapter {
             case KeyEvent.VK_S -> {
                 // Shuffle the shapes
 
-                    List<TangramShape> shuffledShapes = PositionRandomizer.shufflePolygons(levelShapes, new ArrayList<>(), 100, 100);
+                    List<TangramShape> shuffledShapes = PositionRandomizer.shufflePolygons(levelShapes, new ArrayList<>(), 300, 300);
                 levelShapes = shuffledShapes;
                     repaint();
 
