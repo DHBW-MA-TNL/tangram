@@ -4,13 +4,25 @@ import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.util.Objects;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Random;
+
 
 import backend.Level;
+import backend.TangramShape;
 
-public class Difficulty extends JFrame implements ActionListener {
+public class Difficulty extends JPanel implements ActionListener {
 
-    private final JFrame frame = new JFrame("Tangram - ein klassisches Puzzle neu gedacht");
+    public static List<TangramShape> shapes = new ArrayList<>();
+    public static List<TangramShape> shapes2 = new ArrayList<>();
+    public static List<UiElement> uiElements = new ArrayList<>();
+    public static List<TangramShape> coloredShapes = new ArrayList<>();
+    public static List<TangramShape> tmp = new ArrayList<>();
+    public static Random random = new Random();
+
+
+    private final JPanel frame = new JPanel(null);
     public Level.Difficulty level;
 
     private int middleX = 675;  // The middle point X for the area in which the buttons should be placed
@@ -20,16 +32,16 @@ public class Difficulty extends JFrame implements ActionListener {
 
 
     public Difficulty() {
-        super("Tangram - ein klassisches Puzzle neu gedacht");
-        setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        frame.setLayout(null);
+        setLayout(null);
+        setBackground(Color.YELLOW);
+        add(new JLabel("Panel three"));
 
         //setBackgroundImage("/img/tangram_background_2.png");
 
         // Füge die Schwierigkeitsskala hinzu
-        /*ÜDifficultyScalePanel scalePanel = new DifficultyScalePanel(Color.BLACK, Color.BLUE, Color.RED);
+        /*ÜDifficultyScalePanel scalePanel = new frontend.DifficultyScalePanel(Color.BLACK, Color.BLUE, Color.RED);
         scalePanel.setBounds(0, 150, 200, 50);
-        frame.add(scalePanel);*/
+        add(scalePanel);*/
 
 
         addTitle("Tangram - ein klassisches", middleX, 10);
@@ -55,11 +67,11 @@ public class Difficulty extends JFrame implements ActionListener {
 
 
         JLabel test = new JLabel();
-        frame.add(test);
+        add(test);
         test.setBounds(50, 180, 1230, 500);
         //test.setBorder(BorderFactory.createLineBorder(Color.BLACK));
 
-        frame.setResizable(false);
+        //setResizable(false);
     }
 
     private void addTitle(String text, int x, int y) {
@@ -67,7 +79,7 @@ public class Difficulty extends JFrame implements ActionListener {
         title.setFont(new Font("Arial", Font.BOLD, 50));
         title.setVerticalAlignment(SwingConstants.CENTER);
         title.setHorizontalAlignment(SwingConstants.CENTER);
-        frame.add(title);
+        add(title);
         title.setBounds(x - 400, y, 800, 60);
     }
 
@@ -76,16 +88,21 @@ public class Difficulty extends JFrame implements ActionListener {
         var button = new RoundButton(text);
         button.setBackground(Color.LIGHT_GRAY); // Setze die Hintergrundfarbe des Buttons
         button.setForeground(Color.BLACK); // Setze die Schriftfarbe des Buttons
-        frame.add(button);
+        add(button);
         button.setBounds(x - 100, y - 25, 200, 50);
         button.addActionListener(e -> {
                     level = selectedLevel;
                     System.out.println(level);
+
+                    setVisible(false);
+                    getParent().add(new TangramPanel(new UiElement[]{}));
+                    repaint();
                 }
         );
         var scalePanel = new DifficultyScalePanel(startColor, endColor);
         scalePanel.setBounds(x-100, y-80, 200, 50);
-        frame.add(scalePanel);
+        add(scalePanel);
+        repaint();
     }
 
     private static Color interpolateColor(Color c1, Color c2, float ratio) {
@@ -103,9 +120,9 @@ public class Difficulty extends JFrame implements ActionListener {
             System.out.println("1");
             JLabel backgroundLabel = new JLabel(icon);
             System.out.println("2");
-            frame.setContentPane(backgroundLabel);
+            //setContentPane(backgroundLabel);
             System.out.println("3");
-            frame.getContentPane().setLayout(new BorderLayout());
+            //getContentPane().setLayout(new BorderLayout());
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -116,8 +133,8 @@ public class Difficulty extends JFrame implements ActionListener {
     }
 
     private void showWindow() {
-        frame.setSize(1350, 770); // Breite x Höhe
-        frame.setVisible(true);
+        setSize(1350, 770); // Breite x Höhe
+        setVisible(true);
     }
 
     public static void main(String[] args) {
@@ -127,5 +144,18 @@ public class Difficulty extends JFrame implements ActionListener {
 
     @Override
     public void actionPerformed(ActionEvent e) {
+    }
+
+    public void setUiElements() {
+        int windowWidth = getWidth();
+        int windowHeight = getHeight();
+        int subWindowWidth = windowWidth / 4;
+        int subWindowHeight = windowHeight / 8;
+        Polygon sidebarRight = new Polygon(new int[]{windowWidth - subWindowWidth, windowWidth, windowWidth, windowWidth - subWindowWidth}, new int[]{0, 0, windowHeight, windowHeight}, 4);
+        uiElements.add(new UiElement(sidebarRight, Color.BLUE));
+    }
+    @Override
+    public Dimension getPreferredSize() {
+        return new Dimension(800, 800);
     }
 }

@@ -1,3 +1,5 @@
+package backend;
+
 import java.awt.*;
 import java.awt.geom.Line2D;
 import java.util.ArrayList;
@@ -9,6 +11,7 @@ public class TangramShape {
     public Color color;
     public List<Point> points = new Vector<>();
     public List<Line2D> edges = new ArrayList<>();
+    private boolean solvedPos=false;
 
     public TangramShape(Polygon shape, Color color) {
         this.shape = shape;
@@ -18,6 +21,12 @@ public class TangramShape {
 
     }
 
+    public void setSolvedPos(boolean b){
+        solvedPos=b;
+    }
+    public boolean isSolved(){
+        return solvedPos;
+    }
     public List<Line2D> getEdges() {
         List<Line2D> edges = new ArrayList<>();
 
@@ -30,7 +39,7 @@ public class TangramShape {
     }
 
 
-    void setPoints() {
+    public void setPoints() {
         points.clear();
         for (int i = 0; i < shape.npoints; i++) {
             points.add(new Point(shape.xpoints[i], shape.ypoints[i]));
@@ -38,7 +47,7 @@ public class TangramShape {
     }
 
     public String toString() {
-        return "TangramShape{" +
+        return "backend.TangramShape{" +
                 "shape=" + shape +
                 ", color=" + color +
                 "coordinates=" + shape.getBounds() +
@@ -70,7 +79,8 @@ public class TangramShape {
 
     // TODO: Implement methods to rotate, flip, and drag shapes
 
-    public void rotate(double angle) {
+    public void rotate(int j) {
+        double angle = Math.toRadians(j);
         Point center = new Point(shape.getBounds().x + shape.getBounds().width / 2, shape.getBounds().y + shape.getBounds().height / 2);
         for (int i = 0; i < shape.npoints; i++) {
             double x = shape.xpoints[i];
@@ -80,13 +90,15 @@ public class TangramShape {
             shape.xpoints[i] = (int) newX;
             shape.ypoints[i] = (int) newY;
         }
+        setPoints();
+        setEdges();
 
     }
 
     public boolean isCloseTo(TangramShape that) {
         if (this.shape.npoints == that.shape.npoints) {
             for (int i = 0; i < this.shape.npoints; i++) {
-                if (Math.abs(this.distanceTo(that)) < 15) {
+                if (Math.abs(this.distanceTo(that)) < 25) {
                     if (this.getSize() == that.getSize()) {
                         return true;
                     }
