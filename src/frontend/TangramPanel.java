@@ -60,14 +60,40 @@ public class TangramPanel extends JPanel implements MouseListener, MouseMotionLi
     }
 
     public void init(){
+        System.out.println("Init");
         this.levelShapes = new LevelShapes().getlevelShapes().subList(0,Commons.removeShapes[lvl]);
         this.puzzleShapes = new PuzzleSource().getPuzzleShapes().subList(0,Commons.removeShapes[lvl]);
         this.uiElements = uiElements;
 
         List<TangramShape> shuffledShapes = PositionRandomizer.shufflePolygons(levelShapes, new ArrayList<>(), 300, 300);
         levelShapes = shuffledShapes;
+
+        for (TangramShape shape : levelShapes) {
+            if (shape.isOutsideVisibleArea(922, 690)) {
+                System.out.println("Shape out of bounds");
+                init();
+            }
+
+        }
+
         repaint();
     }
+
+    void moveAllShapesInBounds(List<TangramShape> shapes, int dx, int dy) {
+        for (TangramShape shape : shapes) {
+            shape.move(dx, dy);
+        }
+    }
+
+    boolean shapesOutOfBounds(List<TangramShape> shapes, int x, int y) {
+        for (TangramShape shape : shapes) {
+            if (shape.isOutsideVisibleArea(x, y)) {
+                return true;
+            }
+        }
+        return false;
+    }
+
 
     void drawStats(Graphics g){
         g.setColor(Color.black);

@@ -159,7 +159,7 @@ public class TangramShape {
         return distance;
     }
 
-    public void rotateAroundPoint(Point p, int angle) {
+    public void rotateAroundPoint(Point p, double angle) {
         double rad = Math.toRadians(angle);
         double cos = Math.cos(rad);
         double sin = Math.sin(rad);
@@ -362,6 +362,14 @@ public class TangramShape {
                 return false;
             }
         }
+
+
+    // Check if a TangramShape is outside the visible area
+    public boolean isOutsideVisibleArea( int width, int height) {
+        Rectangle visibleArea = new Rectangle(80, 80, width, height);
+        System.out.println(visibleArea);
+        return !visibleArea.contains(this.shape.getBounds());
+    }
 
 
 
