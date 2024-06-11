@@ -9,6 +9,7 @@ import main.TangramGame;
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.*;
+import java.awt.geom.GeneralPath;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -38,6 +39,17 @@ public class TangramPanel extends JPanel implements MouseListener, MouseMotionLi
 
         addButton("Figuren", 1190, 50);
         addButton("Tangram Puzzle", 120, 50);
+
+        var scalePanel = new DifficultyScalePanel(Color.RED, Color.GREEN,1);
+        var scaleCover = new DifficultyScalePanel(Color.LIGHT_GRAY, Color.LIGHT_GRAY,2);
+        scaleCover.setBounds(20, 400, 50, ((350)/5)*Commons.diffScaler[lvl]);
+        scalePanel.setBounds(20, 400, 50, 350);
+        add(scaleCover);
+        add(scalePanel);
+
+
+
+
 
         List<TangramShape> shuffledShapes = PositionRandomizer.shufflePolygons(levelShapes, new ArrayList<>(), 300, 300);
         levelShapes = shuffledShapes;

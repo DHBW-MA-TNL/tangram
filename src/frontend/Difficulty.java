@@ -101,7 +101,7 @@ public class Difficulty extends JPanel implements ActionListener {
                     repaint();
                 }
         );
-        var scalePanel = new DifficultyScalePanel(startColor, endColor);
+        var scalePanel = new DifficultyScalePanel(startColor, endColor,1);
         scalePanel.setBounds(x-100, y-80, 200, 50);
         add(scalePanel);
         repaint();
