@@ -174,27 +174,38 @@ public class TangramPanel extends JPanel implements MouseListener, MouseMotionLi
         repaint();
     }
 
+    void resetUnsolvedShapes(List<TangramShape> shapes) {
+        for (TangramShape shape : shapes) {
+            if (!shape.isSolved()) {
+                shape.isMoveable = true;
+                shape.resetShape();
+            }
+        }
+        repaint();
+    }
+
 
 
     public  void isSolved(List<TangramShape> puzzle, List<TangramShape> sol) {
         boolean solved = true;
         gravity(puzzle, sol);
-        for (TangramShape shape : puzzle) {
-            if(!shape.isSolved()){
-                solved=false;
-
-                    System.out.println("Not solved");
-                return;
-            }
-        }
         for (TangramShape shape : sol) {
             if(!shape.isSolved()){
                 solved=false;
-
+                selectedShape = null;
+                resetUnsolvedShapes(sol);
                 System.out.println("Not solved");
                 return;
             }
         }
+        for (TangramShape shape : puzzle) {
+            if(!shape.isSolved()){
+                solved=false;
+                    System.out.println("Not solved");
+                return;
+            }
+        }
+
         if(solved){
             System.out.println("Solved");
             endTime = System.currentTimeMillis();
@@ -281,20 +292,6 @@ public class TangramPanel extends JPanel implements MouseListener, MouseMotionLi
 
     @Override
     public void mouseReleased(MouseEvent e) {
-        if (false) {
-            System.out.println("Dropping shape");
-            for (TangramShape shape : levelShapes) {
-                    if (selectedShape.isCloseTo(shape)) {
-                        System.out.println("Close to shape2");
-                        selectedShape.shape.xpoints = shape.shape.xpoints;
-                        selectedShape.shape.ypoints = shape.shape.ypoints;
-                        repaint();
-
-                }
-
-            }
-
-        }
         selectedShape= null;
         repaint();
     }

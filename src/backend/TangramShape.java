@@ -14,13 +14,27 @@ public class TangramShape {
     public List<Line2D> edges = new ArrayList<>();
     private boolean solvedPos=false;
     public boolean isMoveable = true;
+    public Polygon originalShape;
 
     public TangramShape(Polygon shape, Color color) {
         this.shape = shape;
         this.color = color;
         setPoints();
         this.edges = getEdges();
+        //safe original shape
+        originalShape = new Polygon(shape.xpoints, shape.ypoints, shape.npoints);
 
+    }
+
+    public void resetShape(){
+        for (int i = 0; i < originalShape.npoints; i++) {
+            shape.xpoints[i] = originalShape.xpoints[i];
+            shape.ypoints[i] = originalShape.ypoints[i];
+        }
+        setPoints();
+        setEdges();
+        isMoveable = true;
+        this.shape.invalidate();
     }
 
     public void setSolvedPos(boolean b){
