@@ -33,7 +33,7 @@ public class Difficulty extends JPanel implements ActionListener {
 
     public Difficulty() {
         setLayout(null);
-        setBackground(Color.YELLOW);
+        //setBackground(Color.lightGray);
         add(new JLabel("Panel three"));
 
         //setBackgroundImage("/img/tangram_background_2.png");
