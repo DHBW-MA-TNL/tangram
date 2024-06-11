@@ -30,6 +30,7 @@ public class TangramGame extends JFrame {
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         setLocationRelativeTo(null);
         setUiElements();
+        setResizable(false);
 
         //backend.TangramShape
         List<TangramShape> rndPos = PositionRandomizer.shufflePolygons(shapes, new ArrayList<>(), 300, 300);
