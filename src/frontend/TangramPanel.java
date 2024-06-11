@@ -12,6 +12,9 @@ import java.awt.event.*;
 import java.awt.geom.GeneralPath;
 import java.util.ArrayList;
 import java.util.List;
+import javax.swing.Timer;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 
 public class TangramPanel extends JPanel implements MouseListener, MouseMotionListener {
     List<TangramShape> levelShapes;
@@ -19,6 +22,14 @@ public class TangramPanel extends JPanel implements MouseListener, MouseMotionLi
     private TangramShape selectedShape = null;
     private UiElement[] uiElements;
     private Point initialMousePos;
+
+    long startTime;
+    long endTime;
+    long elapsedTime = endTime - startTime;
+    double elapsedTimeInSeconds = elapsedTime / 1000.0;
+    boolean inLevel = false;
+    boolean isSolved = false;
+    JLabel solved;
     int lvl;
 
 
@@ -49,10 +60,15 @@ public class TangramPanel extends JPanel implements MouseListener, MouseMotionLi
 
 
 
-
-
         List<TangramShape> shuffledShapes = PositionRandomizer.shufflePolygons(levelShapes, new ArrayList<>(), 300, 300);
         levelShapes = shuffledShapes;
+        for (TangramShape shape : levelShapes) {
+            if (shape.isOutsideVisibleArea(922, 690)) {
+                System.out.println("Shape out of bounds");
+                init();
+            }
+
+        }
 
 
         repaint();
@@ -61,6 +77,12 @@ public class TangramPanel extends JPanel implements MouseListener, MouseMotionLi
 
     public void init(){
         System.out.println("Init");
+        isSolved = false;
+        inLevel = false;
+        //remove solvedScreen
+        if(solved!=null){
+            remove(solved);
+        }
         this.levelShapes = new LevelShapes().getlevelShapes().subList(0,Commons.removeShapes[lvl]);
         this.puzzleShapes = new PuzzleSource().getPuzzleShapes().subList(0,Commons.removeShapes[lvl]);
         this.uiElements = uiElements;
@@ -94,13 +116,24 @@ public class TangramPanel extends JPanel implements MouseListener, MouseMotionLi
         return false;
     }
 
+    void solvedScreen(double time) {
+         solved = new JLabel("Gelöst nach: " + time + " Sekunden");
+        solved.setBounds(500, 500, 200, 50);
+        add(solved);
+    }
 
     void drawStats(Graphics g){
-        g.setColor(Color.black);
+        g.setColor(Color.white);
         int statsX = 1120;
         int statsY = 190;
-        g.drawString("Schwierigkeitsstufe: "+ lvl, statsX,statsY);
-        g.drawString("Score: "+ TangramGame.score, statsX, statsY+15);
+
+        endTime = System.currentTimeMillis();
+        elapsedTime = endTime - startTime;
+        elapsedTimeInSeconds = elapsedTime / 1000.0;
+
+        //g.drawString("Zeit: "+ elapsedTimeInSeconds, statsX, statsY);
+        g.drawString("Schwierigkeitsstufe: "+ lvl, statsX,statsY+15);
+        g.drawString("Score: "+ TangramGame.score, statsX, statsY+30);
     }
 
     private void addButton(String text, int x, int y) {
@@ -136,7 +169,13 @@ public class TangramPanel extends JPanel implements MouseListener, MouseMotionLi
         }
         if(solved){
             System.out.println("Solved");
+            endTime = System.currentTimeMillis();
+            elapsedTime = endTime - startTime;
+            elapsedTimeInSeconds = elapsedTime / 1000.0;
+            System.out.println("Elapsed time: " + elapsedTimeInSeconds + " seconds");
+            solvedScreen(elapsedTimeInSeconds);
             TangramGame.addScore(1);
+            isSolved = true;
         }
 
     }
@@ -156,6 +195,8 @@ public class TangramPanel extends JPanel implements MouseListener, MouseMotionLi
                         shape2.setPoints();
                         shape.setSolvedPos(true);
                         shape2.setSolvedPos(true);
+                        shape2.isMoveable = false;
+                        shape.isMoveable = false;
                         repaint();
                     }
 
@@ -243,7 +284,7 @@ public class TangramPanel extends JPanel implements MouseListener, MouseMotionLi
     // MouseMotionListener methods
     @Override
     public void mouseDragged(MouseEvent e) {
-        if(selectedShape!=null){
+        if(selectedShape!=null&&!isSolved&&selectedShape.isMoveable){
             int dx = e.getX() - initialMousePos.x;
             int dy = e.getY() - initialMousePos.y;
             selectedShape.move(dx, dy);
@@ -251,6 +292,10 @@ public class TangramPanel extends JPanel implements MouseListener, MouseMotionLi
 
             selectedShape.setEdges();
             selectedShape.setPoints();
+            if(!inLevel){
+               startTime = System.currentTimeMillis();
+            }
+            inLevel= true;
             repaint();
         }
 
@@ -279,7 +324,9 @@ private class KeyPress extends KeyAdapter {
                 init();
             }
             case KeyEvent.VK_SPACE -> {
-                isSolved(levelShapes,puzzleShapes);
+                if(!isSolved){
+                    isSolved(levelShapes,puzzleShapes);
+                }
             }
             case KeyEvent.VK_F -> {
                 // Flip the selected shape

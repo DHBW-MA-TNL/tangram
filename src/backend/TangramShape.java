@@ -13,6 +13,7 @@ public class TangramShape {
     public List<Point> points = new Vector<>();
     public List<Line2D> edges = new ArrayList<>();
     private boolean solvedPos=false;
+    public boolean isMoveable = true;
 
     public TangramShape(Polygon shape, Color color) {
         this.shape = shape;
