@@ -49,7 +49,23 @@ public class TangramPanel extends JPanel implements MouseListener, MouseMotionLi
         setLayout(null);
 
         addButton("Figuren", 1190, 50);
-        addButton("Tangram Puzzle", 120, 50);
+        clickButton("Tangram Puzzle", 120, 50,
+                e -> {
+                    getParent().add(new Difficulty());
+                    setVisible(false);
+                    getParent().remove(this);
+
+                    repaint();
+
+                });
+        clickButton("Neues Level", 675, 730, e -> init());
+        clickButton("Prüfen", 900, 730, e -> {
+            if(!isSolved){
+                isSolved(levelShapes,puzzleShapes);
+            }
+        });
+
+
 
         var scalePanel = new DifficultyScalePanel(Color.RED, Color.GREEN,1);
         var scaleCover = new DifficultyScalePanel(Color.LIGHT_GRAY, Color.LIGHT_GRAY,2);
@@ -144,6 +160,18 @@ public class TangramPanel extends JPanel implements MouseListener, MouseMotionLi
         int width = 200;
         int height = 50;
         button.setBounds(x - width / 2, y - height / 2, width, height); // Set the position and size of the button
+    }
+
+    private void clickButton(String text, int x, int y,   ActionListener actionListener) {
+        var button = new RoundButton(text);
+        button.setBackground(Color.LIGHT_GRAY); // Setze die Hintergrundfarbe des Buttons
+        button.setForeground(Color.BLACK); // Setze die Schriftfarbe des Buttons
+        add(button);
+        button.setBounds(x - 100, y - 25, 200, 50);
+        button.addActionListener(actionListener);
+
+        add(button);
+        repaint();
     }
 
 
