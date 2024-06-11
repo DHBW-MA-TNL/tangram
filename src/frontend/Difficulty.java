@@ -96,7 +96,8 @@ public class Difficulty extends JPanel implements ActionListener {
                     System.out.println(level);
 
                     setVisible(false);
-                    getParent().add(new TangramPanel(new UiElement[]{},lvl));
+                    setUiElements();
+                    getParent().add(new TangramPanel(uiElements.toArray(new frontend.UiElement[0]),lvl));
                     repaint();
                 }
         );
@@ -153,7 +154,7 @@ public class Difficulty extends JPanel implements ActionListener {
         int subWindowWidth = windowWidth / 4;
         int subWindowHeight = windowHeight / 8;
         Polygon sidebarRight = new Polygon(new int[]{windowWidth - subWindowWidth, windowWidth, windowWidth, windowWidth - subWindowWidth}, new int[]{0, 0, windowHeight, windowHeight}, 4);
-        uiElements.add(new UiElement(sidebarRight, Color.BLUE));
+        uiElements.add(new UiElement(sidebarRight, Color.gray));
     }
     @Override
     public Dimension getPreferredSize() {
