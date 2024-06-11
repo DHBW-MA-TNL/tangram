@@ -1,5 +1,6 @@
 package frontend;
 
+import backend.Level;
 import backend.PositionRandomizer;
 import backend.TangramShape;
 import cfg.Commons;
@@ -33,10 +34,15 @@ public class TangramPanel extends JPanel implements MouseListener, MouseMotionLi
         setFocusTraversalKeysEnabled(true);
         this.setFocusable(true);
         this.setRequestFocusEnabled(true);
+        setLayout(null);
 
+        addButton("Figuren", 1190, 50);
+        addButton("Tangram Puzzle", 120, 50);
 
         List<TangramShape> shuffledShapes = PositionRandomizer.shufflePolygons(levelShapes, new ArrayList<>(), 300, 300);
         levelShapes = shuffledShapes;
+
+
         repaint();
 
     }
@@ -53,8 +59,20 @@ public class TangramPanel extends JPanel implements MouseListener, MouseMotionLi
 
     void drawStats(Graphics g){
         g.setColor(Color.black);
-        g.drawString("Schwierigkeitsstufe: "+ lvl, 900,50);
-        g.drawString("Score: "+ TangramGame.score, 900, 60);
+        int statsX = 1120;
+        int statsY = 190;
+        g.drawString("Schwierigkeitsstufe: "+ lvl, statsX,statsY);
+        g.drawString("Score: "+ TangramGame.score, statsX, statsY+15);
+    }
+
+    private void addButton(String text, int x, int y) {
+        var button = new RoundButton(text);
+        button.setBackground(Color.LIGHT_GRAY); // Set the background color of the button
+        button.setForeground(Color.BLACK); // Set the text color of the button
+        add(button);
+        int width = 200;
+        int height = 50;
+        button.setBounds(x - width / 2, y - height / 2, width, height); // Set the position and size of the button
     }
 
 
