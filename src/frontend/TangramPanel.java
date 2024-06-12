@@ -31,6 +31,8 @@ public class TangramPanel extends JPanel implements MouseListener, MouseMotionLi
     boolean isSolved = false;
     JLabel solved;
     int lvl;
+    int streakUnder1Min = 0;
+    int streakOver4Min = 0;
 
 
     public TangramPanel(UiElement[]  uiElements, int lvl) {
@@ -85,7 +87,6 @@ public class TangramPanel extends JPanel implements MouseListener, MouseMotionLi
 
         }
 
-
         repaint();
 
     }
@@ -132,9 +133,13 @@ public class TangramPanel extends JPanel implements MouseListener, MouseMotionLi
     }
 
     void solvedScreen(double time) {
-         solved = new JLabel("Gelöst nach: " + time + " Sekunden");
-        solved.setBounds(500, 500, 200, 50);
-        add(solved);
+         //solved = new JLabel("Gelöst nach: " + time + " Sekunden");
+        //solved.setBounds(500, 500, 200, 50);
+
+
+        //JoptionPane with init() on close
+        JOptionPane.showMessageDialog(this, "Gelöst nach: " + time + " Sekunden", "Gelöst", JOptionPane.INFORMATION_MESSAGE);
+        init();
     }
 
     void drawStats(Graphics g){
@@ -214,6 +219,42 @@ public class TangramPanel extends JPanel implements MouseListener, MouseMotionLi
             solvedScreen(elapsedTimeInSeconds);
             TangramGame.addScore(1);
             isSolved = true;
+            if (elapsedTimeInSeconds < 60) {
+                streakUnder1Min++;
+                if (streakUnder1Min == 3 && lvl < 4) {
+                    // JOptionPane. dialog button text
+                    int dialogButton = JOptionPane.YES_NO_OPTION;
+                    int dialogResult = JOptionPane.showConfirmDialog(null, "Möchten Sie das nächste Level spielen?", "Weiter?", dialogButton);
+                    if (dialogResult == JOptionPane.YES_OPTION) {
+                        lvl++;
+                        init();
+                    }
+                    streakUnder1Min = 0;
+                    streakOver4Min = 0;
+
+                }
+            }
+            else if (elapsedTime>240){
+
+                streakOver4Min++;
+                if (streakOver4Min == 5 && lvl > 0) {
+                    // JOptionPane. dialog button text
+                    int dialogButton = JOptionPane.YES_NO_OPTION;
+                        int dialogResult = JOptionPane.showConfirmDialog(null, "Möchten Sie das vorherige Level spielen?", "Zurück?", dialogButton);
+                    if (dialogResult == JOptionPane.YES_OPTION) {
+                        lvl--;
+                        init();
+                    }
+                    streakUnder1Min = 0;
+                        streakOver4Min = 0;
+
+
+                }
+
+            }else {
+                streakOver4Min = 0;
+                streakUnder1Min = 0;
+            }
         }
 
     }
