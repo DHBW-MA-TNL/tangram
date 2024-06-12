@@ -19,8 +19,8 @@ public class LevelShapes{
         Polygon Q1 = multiplyPolygon(new Polygon(new int[]{25, 50, 25, 0}, new int[]{25, 50, 75, 50}, 4), multiplier);
         Polygon P1 = multiplyPolygon(new Polygon(new int[]{25, 75, 100, 50}, new int[]{75, 75, 100, 100}, 4), multiplier);
 
-        levelShapes.add(new TangramShape(D1, Color.BLUE));
-        levelShapes.add(new TangramShape(D2, Color.RED));
+        levelShapes.add(new TangramShape(D1, Color.GRAY));
+        levelShapes.add(new TangramShape(D2, Color.GRAY));
         levelShapes.add(new TangramShape(D3, Color.GRAY));
         levelShapes.add(new TangramShape(D4, Color.GRAY));
         levelShapes.add(new TangramShape(D5, Color.GRAY));
