@@ -75,7 +75,6 @@ public class TangramPanel extends JPanel implements MouseListener, MouseMotionLi
         add(scalePanel);
 
 
-
         List<TangramShape> shuffledShapes = PositionRandomizer.shufflePolygons(levelShapes, new ArrayList<>(), 300, 300);
         levelShapes = shuffledShapes;
         for (TangramShape shape : levelShapes) {
@@ -262,6 +261,11 @@ public class TangramPanel extends JPanel implements MouseListener, MouseMotionLi
         this.grabFocus();
 
         drawStats(g);
+
+        g.drawString("MouseDrag/Rechtsklick - Shape wählen/bewegen", 1030, 700);
+        g.drawString("Leertaste - Prüfen", 1030, 720);
+        g.drawString("R - Shape drehen", 1030, 740);
+        g.drawString("L - Neues Level", 1030, 760);
 
 
     }
