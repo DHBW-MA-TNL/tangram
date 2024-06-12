@@ -108,21 +108,26 @@ public class TangramShape {
         }
         setPoints();
         setEdges();
-
+        this.shape.invalidate();
     }
 
     public boolean isCloseTo(TangramShape that) {
         boolean close = false;
+        int count = 0;
         if (this.shape.npoints == that.shape.npoints) {
-            for (int i = 0; i < this.shape.npoints; i++) {
-                System.out.println(this.getSize() - that.getSize());
-                if (!(Math.abs(this.distanceTo(that)) < 50)) {
-                    close=false;
-                    break;
+            this.setPoints();
+            that.setPoints();
+            for (Point point : this.points) {
+
+                for (Point thatPoint : that.points) {
+                    if (Math.abs(point.x - thatPoint.x) < 10 && Math.abs(point.y - thatPoint.y) < 10) {
+                        count++;
+                    }
                 }
-                else {
-                    close= true;
-                }
+            }
+            System.out.println("count = " + count);
+            if(count >= this.shape.npoints){
+                close = true;
             }
         }
         return close;
@@ -142,10 +147,12 @@ public class TangramShape {
     public void move(Point p) {
         shape.translate(p.x, p.y);
         setPoints();
+        this.shape.invalidate();
     }
 
     public void move(int dx, int dy) {
         shape.translate(dx, dy);
+        this.shape.invalidate();
     }
 
     public void alignToPoint(Point p) {
@@ -187,6 +194,7 @@ public class TangramShape {
             this.shape.ypoints[i] = p.y + (int) Math.round(dx * sin + dy * cos);
         }
         setEdges();
+        this.shape.invalidate();
     }
 
     public boolean overlaps(TangramShape that) {
@@ -220,6 +228,7 @@ public class TangramShape {
             this.shape.ypoints[i] += dy;
         }
         setEdges();
+        this.shape.invalidate();
     }
 
     public boolean onlyVertexInCommon(TangramShape that) {
