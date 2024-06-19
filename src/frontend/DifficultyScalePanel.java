@@ -6,8 +6,8 @@ import java.awt.geom.GeneralPath;
 
 public class DifficultyScalePanel extends JPanel {
     private final int type;
-    private Color startColor;
-    private Color endColor;
+    private final Color startColor;
+    private final Color endColor;
 
     public DifficultyScalePanel(Color startColor, Color endColor, int type) {
         this.startColor = startColor;

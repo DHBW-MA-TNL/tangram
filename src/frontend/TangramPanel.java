@@ -185,7 +185,7 @@ public class TangramPanel extends JPanel implements MouseListener, MouseMotionLi
         init();
         if (elapsedTimeInSeconds < Commons.levelUpTime) {
             streakUnder1Min++;
-            if (streakUnder1Min == 3 && lvl < 4) {
+            if (streakUnder1Min == Commons.requiredLevelUpStreak && lvl < 4) {
                 // JOptionPane. dialog button text
                 int dialogButton = JOptionPane.YES_NO_OPTION;
                 int dialogResult = JOptionPane.showConfirmDialog(null, "Möchten Sie das nächste Level spielen?", "Weiter?", dialogButton);
@@ -200,7 +200,7 @@ public class TangramPanel extends JPanel implements MouseListener, MouseMotionLi
         } else if (elapsedTime > Commons.levelDownTime) {
 
             streakOver4Min++;
-            if (streakOver4Min == 5 && lvl > 0) {
+            if (streakOver4Min == Commons.requiredLevelDownStreak && lvl > 0) {
                 // JOptionPane. dialog button text
                 int dialogButton = JOptionPane.YES_NO_OPTION;
                 int dialogResult = JOptionPane.showConfirmDialog(null, "Möchten Sie das vorherige Level spielen?", "Zurück?", dialogButton);
@@ -210,7 +210,6 @@ public class TangramPanel extends JPanel implements MouseListener, MouseMotionLi
                 }
                 streakUnder1Min = 0;
                 streakOver4Min = 0;
-
 
             }
 
@@ -294,31 +293,25 @@ public class TangramPanel extends JPanel implements MouseListener, MouseMotionLi
             inLevel = true;
             repaint();
         }
-
-
     }
 
     // MouseListener methods
     @Override
     public void mouseClicked(MouseEvent e) {
-
     }
 
 
     @Override
     public void mouseEntered(MouseEvent e) {
-        // Handle mouse enter event
     }
 
     @Override
     public void mouseExited(MouseEvent e) {
-        // Handle mouse exit event
     }
 
 
     @Override
     public void mouseMoved(MouseEvent e) {
-
     }
 
 

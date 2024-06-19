@@ -3,9 +3,7 @@ package backend;
 import java.awt.*;
 import java.awt.geom.Area;
 import java.util.*;
-import java.util.ArrayList;
 import java.util.List;
-import java.util.Random;
 
 public class PositionRandomizer {
     private static final Random random = new Random();

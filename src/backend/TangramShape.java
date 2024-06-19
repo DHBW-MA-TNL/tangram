@@ -177,10 +177,4 @@ public class TangramShape {
         }
 
     }
-
-
-
-
-
-
 }

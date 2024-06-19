@@ -3,8 +3,8 @@ package frontend;
 import java.awt.*;
 
 public class UiElement {
-    private Polygon shape;
-    private Color color;
+    private final Polygon shape;
+    private final Color color;
 
     public UiElement(Polygon shape, Color color) {
         this.shape = shape;

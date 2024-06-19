@@ -6,25 +6,20 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Random;
 
 
-import backend.TangramShape;
 import cfg.Commons;
 
 public class Difficulty extends JPanel implements ActionListener {
 
 
     public static List<UiElement> uiElements = new ArrayList<>();
-
-
-    private final JPanel frame = new JPanel(null);
     public Commons.Difficulty level;
 
-    private int middleX = 675;  // The middle point X for the area in which the buttons should be placed
-    private int middleY = 430;  // The middle point Y for the area in which the buttons should be placed
-    private int differX = 238;  // The difference between the single buttons at the X line
-    private int differY = 98;   // The difference between the single buttons at the Y line
+    private final int middleX = 675;  // The middle point X for the area in which the buttons should be placed
+    private final int middleY = 430;  // The middle point Y for the area in which the buttons should be placed
+    private final int differX = 238;  // The difference between the single buttons at the X line
+    private final int differY = 98;   // The difference between the single buttons at the Y line
 
 
     public Difficulty() {
@@ -35,9 +30,6 @@ public class Difficulty extends JPanel implements ActionListener {
         //setBackgroundImage("/img/tangram_background_2.png");
 
         // Füge die Schwierigkeitsskala hinzu
-        /*ÜDifficultyScalePanel scalePanel = new frontend.DifficultyScalePanel(Color.BLACK, Color.BLUE, Color.RED);
-        scalePanel.setBounds(0, 150, 200, 50);
-        add(scalePanel);*/
 
 
         addTitle("Tangram - ein klassisches", middleX, 10);
@@ -65,9 +57,6 @@ public class Difficulty extends JPanel implements ActionListener {
         JLabel test = new JLabel();
         add(test);
         test.setBounds(50, 180, 1230, 500);
-        //test.setBorder(BorderFactory.createLineBorder(Color.BLACK));
-
-        //setResizable(false);
     }
 
     private void addTitle(String text, int x, int y) {
@@ -129,7 +118,6 @@ public class Difficulty extends JPanel implements ActionListener {
         int windowWidth = getWidth();
         int windowHeight = getHeight();
         int subWindowWidth = windowWidth / 4;
-        int subWindowHeight = windowHeight / 8;
         Polygon sidebarRight = new Polygon(new int[]{windowWidth - subWindowWidth, windowWidth, windowWidth, windowWidth - subWindowWidth}, new int[]{0, 0, windowHeight, windowHeight}, 4);
         uiElements.add(new UiElement(sidebarRight, Color.gray));
     }
