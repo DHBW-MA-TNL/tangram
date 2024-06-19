@@ -9,8 +9,8 @@ import java.util.List;
 import java.util.Random;
 
 
-import backend.Level;
 import backend.TangramShape;
+import cfg.Commons;
 
 public class Difficulty extends JPanel implements ActionListener {
 
@@ -23,7 +23,7 @@ public class Difficulty extends JPanel implements ActionListener {
 
 
     private final JPanel frame = new JPanel(null);
-    public Level.Difficulty level;
+    public Commons.Difficulty level;
 
     private int middleX = 675;  // The middle point X for the area in which the buttons should be placed
     private int middleY = 430;  // The middle point Y for the area in which the buttons should be placed
@@ -55,15 +55,15 @@ public class Difficulty extends JPanel implements ActionListener {
         var orange_red = interpolateColor(orange, red, 0.5f);
 
         addButtonWithScale("Unerfahren", middleX - 2 * differX, middleY + 2 * differY,
-                Level.Difficulty.UNERFAHREN, green, green_yellow,0);
+                Commons.Difficulty.UNERFAHREN, green, green_yellow,0);
         addButtonWithScale("Anfänger", middleX - differX, middleY + differY,
-                Level.Difficulty.ANFAENGER, green_yellow, yellow,1);
+                Commons.Difficulty.ANFAENGER, green_yellow, yellow,1);
         addButtonWithScale("Fortgeschrittener", middleX, middleY,
-                Level.Difficulty.FORTGESCHRITTEN, yellow, orange,2);
+                Commons.Difficulty.FORTGESCHRITTEN, yellow, orange,2);
         addButtonWithScale("Experte", middleX + differX, middleY - differY,
-                Level.Difficulty.EXPERTE, orange, orange_red,3);
+                Commons.Difficulty.EXPERTE, orange, orange_red,3);
         addButtonWithScale("Profi", middleX + 2 * differX, middleY - 2 * differY,
-                Level.Difficulty.PROFI, orange_red, red,4);
+                Commons.Difficulty.PROFI, orange_red, red,4);
 
 
         JLabel test = new JLabel();
@@ -83,7 +83,7 @@ public class Difficulty extends JPanel implements ActionListener {
         title.setBounds(x - 400, y, 800, 60);
     }
 
-    private void addButtonWithScale(String text, int x, int y, Level.Difficulty selectedLevel,
+    private void addButtonWithScale(String text, int x, int y, cfg.Commons.Difficulty selectedLevel,
                                     Color startColor, Color endColor,
                                     int lvl) {
         var button = new RoundButton(text);
@@ -130,7 +130,7 @@ public class Difficulty extends JPanel implements ActionListener {
         }
     }
 
-    public Level.Difficulty getLevel() {
+    public Commons.Difficulty getLevel() {
         return this.level;
     }
 

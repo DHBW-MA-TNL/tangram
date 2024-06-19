@@ -21,13 +21,12 @@ public class TangramPanel extends JPanel implements MouseListener, MouseMotionLi
     double elapsedTimeInSeconds = elapsedTime / 1000.0;
     boolean inLevel = false;
     boolean isSolved = false;
-    JLabel solved;
     int lvl;
     int streakUnder1Min = 0;
     int streakOver4Min = 0;
     private List<TangramShape> puzzleShapes;
     private TangramShape selectedShape = null;
-    private UiElement[] uiElements;
+    private final UiElement[] uiElements;
     private Point initialMousePos;
 
 
@@ -72,8 +71,7 @@ public class TangramPanel extends JPanel implements MouseListener, MouseMotionLi
         add(scalePanel);
 
 
-        List<TangramShape> shuffledShapes = PositionRandomizer.shufflePolygons(grayShapes, new ArrayList<>(), 300, 300);
-        grayShapes = shuffledShapes;
+        grayShapes = PositionRandomizer.shufflePolygons(grayShapes, new ArrayList<>(), 300, 300);
         for (TangramShape shape : grayShapes) {
             if (shape.isOutsideVisibleArea(922, 690)) {
                 System.out.println("Shape out of bounds");
@@ -90,16 +88,11 @@ public class TangramPanel extends JPanel implements MouseListener, MouseMotionLi
         System.out.println("Init");
         isSolved = false;
         inLevel = false;
-        //remove solvedScreen
-        if (solved != null) {
-            remove(solved);
-        }
+
         this.grayShapes = new GrayShapes().getGrayShapes().subList(0, Commons.removeShapes[lvl]);
         this.puzzleShapes = new PuzzleSource().getPuzzleShapes().subList(0, Commons.removeShapes[lvl]);
-        this.uiElements = uiElements;
 
-        List<TangramShape> shuffledShapes = PositionRandomizer.shufflePolygons(grayShapes, new ArrayList<>(), 300, 300);
-        grayShapes = shuffledShapes;
+        grayShapes = PositionRandomizer.shufflePolygons(grayShapes, new ArrayList<>(), 300, 300);
 
         for (TangramShape shape : grayShapes) {
             if (shape.isOutsideVisibleArea(922, 690)) {
@@ -165,11 +158,9 @@ public class TangramPanel extends JPanel implements MouseListener, MouseMotionLi
 
 
     public void isSolved(List<TangramShape> gS, List<TangramShape> sol) {
-        boolean solved = true;
-        gravity(gS, sol);
+        gravityAll(gS, sol);
         for (TangramShape shape : sol) {
             if (!shape.isSolved()) {
-                solved = false;
                 selectedShape = null;
                 resetUnsolvedShapes(sol);
                 System.out.println("Not solved");
@@ -178,62 +169,59 @@ public class TangramPanel extends JPanel implements MouseListener, MouseMotionLi
         }
         for (TangramShape shape : gS) {
             if (!shape.isSolved()) {
-                solved = false;
                 System.out.println("Not solved");
                 return;
             }
         }
 
-        if (solved) {
-            System.out.println("Solved");
-            endTime = System.currentTimeMillis();
-            elapsedTime = endTime - startTime;
-            elapsedTimeInSeconds = elapsedTime / 1000.0;
-            System.out.println("Elapsed time: " + elapsedTimeInSeconds + " seconds");
-            solvedScreen(elapsedTimeInSeconds);
-            TangramGame.addScore(1);
-            isSolved = true;
-            init();
-            if (elapsedTimeInSeconds < 60) {
-                streakUnder1Min++;
-                if (streakUnder1Min == 3 && lvl < 4) {
-                    // JOptionPane. dialog button text
-                    int dialogButton = JOptionPane.YES_NO_OPTION;
-                    int dialogResult = JOptionPane.showConfirmDialog(null, "Möchten Sie das nächste Level spielen?", "Weiter?", dialogButton);
-                    if (dialogResult == JOptionPane.YES_OPTION) {
-                        lvl++;
-                        init();
-                    }
-                    streakUnder1Min = 0;
-                    streakOver4Min = 0;
-
+        System.out.println("Solved");
+        endTime = System.currentTimeMillis();
+        elapsedTime = endTime - startTime;
+        elapsedTimeInSeconds = elapsedTime / 1000.0;
+        System.out.println("Elapsed time: " + elapsedTimeInSeconds + " seconds");
+        solvedScreen(elapsedTimeInSeconds);
+        TangramGame.addScore(1);
+        isSolved = true;
+        init();
+        if (elapsedTimeInSeconds < Commons.levelUpTime) {
+            streakUnder1Min++;
+            if (streakUnder1Min == 3 && lvl < 4) {
+                // JOptionPane. dialog button text
+                int dialogButton = JOptionPane.YES_NO_OPTION;
+                int dialogResult = JOptionPane.showConfirmDialog(null, "Möchten Sie das nächste Level spielen?", "Weiter?", dialogButton);
+                if (dialogResult == JOptionPane.YES_OPTION) {
+                    lvl++;
+                    init();
                 }
-            } else if (elapsedTime > 240) {
-
-                streakOver4Min++;
-                if (streakOver4Min == 5 && lvl > 0) {
-                    // JOptionPane. dialog button text
-                    int dialogButton = JOptionPane.YES_NO_OPTION;
-                    int dialogResult = JOptionPane.showConfirmDialog(null, "Möchten Sie das vorherige Level spielen?", "Zurück?", dialogButton);
-                    if (dialogResult == JOptionPane.YES_OPTION) {
-                        lvl--;
-                        init();
-                    }
-                    streakUnder1Min = 0;
-                    streakOver4Min = 0;
-
-
-                }
-
-            } else {
-                streakOver4Min = 0;
                 streakUnder1Min = 0;
+                streakOver4Min = 0;
+
             }
+        } else if (elapsedTime > Commons.levelDownTime) {
+
+            streakOver4Min++;
+            if (streakOver4Min == 5 && lvl > 0) {
+                // JOptionPane. dialog button text
+                int dialogButton = JOptionPane.YES_NO_OPTION;
+                int dialogResult = JOptionPane.showConfirmDialog(null, "Möchten Sie das vorherige Level spielen?", "Zurück?", dialogButton);
+                if (dialogResult == JOptionPane.YES_OPTION) {
+                    lvl--;
+                    init();
+                }
+                streakUnder1Min = 0;
+                streakOver4Min = 0;
+
+
+            }
+
+        } else {
+            streakOver4Min = 0;
+            streakUnder1Min = 0;
         }
 
     }
 
-    public void gravity(List<TangramShape> gS, List<TangramShape> sol) {
+    public void gravityAll(List<TangramShape> gS, List<TangramShape> sol) {
         for (TangramShape grayShape : gS) {
             if (!grayShape.isSolved()) {
                 for (TangramShape coloredShape : sol) {
@@ -346,10 +334,8 @@ public class TangramPanel extends JPanel implements MouseListener, MouseMotionLi
             System.out.println("Key released: " + e.getKeyCode());
             // Handle key release event
             switch (e.getKeyCode()) {
-                case KeyEvent.VK_L -> {
-                    // Rotate the selected shape
-                    init();
-                }
+                case KeyEvent.VK_L -> init();
+
                 case KeyEvent.VK_SPACE -> {
                     if (!isSolved) {
                         isSolved(grayShapes, puzzleShapes);
@@ -357,6 +343,15 @@ public class TangramPanel extends JPanel implements MouseListener, MouseMotionLi
                 }
                 case KeyEvent.VK_F -> {
                     // Flip the selected shape
+                    if (selectedShape != null) {
+                        System.out.println("Flipping shape");
+                        selectedShape.rotate(45);
+                        repaint();
+                    }
+                }
+
+                case KeyEvent.VK_R -> {
+                    // Rotate the selected shape
                     if (selectedShape != null) {
                         System.out.println("Flipping shape");
                         selectedShape.rotate(45);
@@ -373,23 +368,6 @@ public class TangramPanel extends JPanel implements MouseListener, MouseMotionLi
                 }
 
             }
-        }
-
-        @Override
-        public void keyPressed(KeyEvent e) {
-            System.out.println("Key pressed: " + e.getKeyCode());
-            switch (e.getKeyCode()) {
-                case KeyEvent.VK_R -> {
-                    // Rotate the selected shape
-                    if (selectedShape != null) {
-                        System.out.println("Flipping shape");
-                        selectedShape.rotate(45);
-                        repaint();
-                    }
-                }
-
-            }
-            // Handle key press event
         }
     }
 
