@@ -148,7 +148,7 @@ public class TangramPanel extends JPanel implements MouseListener, MouseMotionLi
 
     void resetUnsolvedShapes(List<TangramShape> shapes) {
         for (TangramShape shape : shapes) {
-            if (!shape.isSolved()) {
+            if (shape.isNotSolved()) {
                 shape.isMoveable = true;
                 shape.resetShape();
             }
@@ -160,7 +160,7 @@ public class TangramPanel extends JPanel implements MouseListener, MouseMotionLi
     public void isSolved(List<TangramShape> gS, List<TangramShape> sol) {
         gravityAll(gS, sol);
         for (TangramShape shape : sol) {
-            if (!shape.isSolved()) {
+            if (shape.isNotSolved()) {
                 selectedShape = null;
                 resetUnsolvedShapes(sol);
                 System.out.println("Not solved");
@@ -168,7 +168,7 @@ public class TangramPanel extends JPanel implements MouseListener, MouseMotionLi
             }
         }
         for (TangramShape shape : gS) {
-            if (!shape.isSolved()) {
+            if (shape.isNotSolved()) {
                 System.out.println("Not solved");
                 return;
             }
@@ -223,9 +223,9 @@ public class TangramPanel extends JPanel implements MouseListener, MouseMotionLi
 
     public void gravityAll(List<TangramShape> gS, List<TangramShape> sol) {
         for (TangramShape grayShape : gS) {
-            if (!grayShape.isSolved()) {
+            if (grayShape.isNotSolved()) {
                 for (TangramShape coloredShape : sol) {
-                    if (!coloredShape.isSolved()) {
+                    if (coloredShape.isNotSolved()) {
                         coloredShape.gravity(grayShape);
                         repaint();
                     }
