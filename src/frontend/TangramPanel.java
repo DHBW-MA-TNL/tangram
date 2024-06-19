@@ -48,7 +48,7 @@ public class TangramPanel extends JPanel implements MouseListener, MouseMotionLi
         addButton("Figuren", 1190, 50);
         clickButton("Tangram Puzzle", 120, 50,
                 e -> {
-                    getParent().add(new Difficulty());
+                    getParent().add(new DifficultyPanel());
                     setVisible(false);
                     getParent().remove(this);
 
@@ -79,7 +79,6 @@ public class TangramPanel extends JPanel implements MouseListener, MouseMotionLi
             }
 
         }
-
         repaint();
 
     }
@@ -101,7 +100,6 @@ public class TangramPanel extends JPanel implements MouseListener, MouseMotionLi
             }
 
         }
-
         repaint();
     }
 
@@ -119,7 +117,6 @@ public class TangramPanel extends JPanel implements MouseListener, MouseMotionLi
         elapsedTime = endTime - startTime;
         elapsedTimeInSeconds = elapsedTime / 1000.0;
 
-        //g.drawString("Zeit: "+ elapsedTimeInSeconds, statsX, statsY);
         g.drawString("Schwierigkeitsstufe: " + lvl, statsX, statsY + 15);
         g.drawString("Score: " + TangramGame.score, statsX, statsY + 30);
     }

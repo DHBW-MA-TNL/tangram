@@ -1,6 +1,6 @@
 package main;
 
-import frontend.Difficulty;
+import frontend.DifficultyPanel;
 import frontend.UiElement;
 
 import javax.swing.*;
@@ -21,7 +21,7 @@ public class TangramGame extends JFrame {
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         setLocationRelativeTo(null);
         setResizable(false);
-        add(new Difficulty());
+        add(new DifficultyPanel());
     }
 
     public static void main(String[] args) {
