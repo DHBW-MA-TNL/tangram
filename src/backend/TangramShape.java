@@ -43,6 +43,7 @@ public class TangramShape {
     public boolean isSolved(){
         return solvedPos;
     }
+
     public List<Line2D> getEdges() {
         List<Line2D> edges = new ArrayList<>();
 
@@ -75,25 +76,6 @@ public class TangramShape {
         g.setColor(color);
         g.fillPolygon(shape);
     }
-
-    public void shuffle() {
-        int[] x = shape.xpoints;
-        int[] y = shape.ypoints;
-        Vector<Integer> xVector = new Vector<>();
-        Vector<Integer> yVector = new Vector<>();
-        for (int i = 0; i < x.length; i++) {
-            xVector.add(x[i]);
-            yVector.add(y[i]);
-        }
-        for (int i = 0; i < x.length; i++) {
-            x[i] = xVector.get((i + 2) % x.length);
-            y[i] = yVector.get((i + 2) % y.length);
-        }
-
-
-    }
-
-    // TODO: Implement methods to rotate, flip, and drag shapes
 
     public void rotate(int j) {
         double angle = Math.toRadians(j);
@@ -133,52 +115,9 @@ public class TangramShape {
         return close;
     }
 
-    public boolean samePosition(TangramShape that) {
-        boolean same = true;
-        for (int i = 0; i < this.shape.npoints - 1; i++) {
-            if (this.shape.xpoints[i] != that.shape.xpoints[i] || this.shape.ypoints[i] != that.shape.ypoints[i]) {
-                same = false;
-            }
-        }
-        return same;
-    }
-
-
-    public void move(Point p) {
-        shape.translate(p.x, p.y);
-        setPoints();
-        this.shape.invalidate();
-    }
-
     public void move(int dx, int dy) {
         shape.translate(dx, dy);
         this.shape.invalidate();
-    }
-
-    public void alignToPoint(Point p) {
-        //move shape that a corner point is at the given point
-        Point corner = points.get(2);
-        int dx = p.x - corner.x;
-        int dy = p.y - corner.y;
-        move(new Point(dx, dy));
-
-    }
-
-    public void flip() {
-
-    }
-
-    public int getSize() {
-        return shape.getBounds().width * shape.getBounds().height;
-    }
-
-    public double distanceTo(TangramShape that) {
-        double distance = 0;
-        for (int i = 0; i < this.shape.npoints-1; i++) {
-            distance += Math.sqrt(Math.pow(this.shape.xpoints[i] - that.shape.xpoints[i], 2) + Math.pow(this.shape.ypoints[i] - that.shape.ypoints[i], 2));
-        }
-        System.out.println("distance = " + distance);
-        return distance;
     }
 
     public void rotateAroundPoint(Point p, double angle) {
@@ -197,27 +136,6 @@ public class TangramShape {
         this.shape.invalidate();
     }
 
-    public boolean overlaps(TangramShape that) {
-        int count = 0;
-        for (int i = 0; i < this.shape.npoints; i++) {
-            if (that.shape.contains(this.shape.xpoints[i], this.shape.ypoints[i])) {
-                count++;
-            }
-        }
-        return count > 1;
-    }
-
-    public void movePolygonToPoint(int npoint, Point targetPoint) {
-        if (npoint < 0 || npoint >= this.shape.npoints) {
-            throw new IllegalArgumentException("Invalid npoint");
-        }
-
-        int dx = targetPoint.x - this.shape.xpoints[npoint];
-        int dy = targetPoint.y - this.shape.ypoints[npoint];
-
-        this.shape.translate(dx, dy);
-        this.setEdges();
-    }
 
     public void alignNPointToPoint(int n, Point p) {
         int dx = p.x - this.shape.xpoints[n];
@@ -231,168 +149,33 @@ public class TangramShape {
         this.shape.invalidate();
     }
 
-    public boolean onlyVertexInCommon(TangramShape that) {
-        int count = 0;
-        for (int i = 0; i < this.shape.npoints; i++) {
-            for (int j = 0; j < that.shape.npoints; j++) {
-                if (this.shape.xpoints[i] == that.shape.xpoints[j] && this.shape.ypoints[i] == that.shape.ypoints[j]) {
-                    count++;
-                }
-            }
-        }
-        System.out.println("count = " + count);
-        return count == 1;
-    }
-
-    public int vertexInCommon(TangramShape that) {
-        for (int i = 0; i < this.shape.npoints; i++) {
-            for (int j = 0; j < that.shape.npoints; j++) {
-                if (this.shape.xpoints[i] == that.shape.xpoints[j] && this.shape.ypoints[i] == that.shape.ypoints[j]) {
-                    return i;
-                }
-            }
-        }
-        return -1;
-    }
-
-    public boolean isInside(TangramShape that) {
-        for (int i = 0; i < this.shape.npoints; i++) {
-            if (!that.shape.contains(this.shape.xpoints[i], this.shape.ypoints[i])) {
-                return false;
-            }
-        }
-        return true;
-    }
-
-    public boolean touches(TangramShape that) {
-        for (int i = 0; i < this.shape.npoints; i++) {
-            for (int j = 0; j < that.shape.npoints; j++) {
-                if (Math.abs(this.shape.xpoints[i] - that.shape.xpoints[j]) < 10 && Math.abs(this.shape.ypoints[i] - that.shape.ypoints[j]) < 10) {
-                    return true;
-                }
-            }
-        }
-        return false;
-    }
-
-    public boolean centerPointInside(TangramShape that) {
-        int x = this.shape.getBounds().x + this.shape.getBounds().width / 2;
-        int y = this.shape.getBounds().y + this.shape.getBounds().height / 2;
-        return that.shape.contains(x, y);
-    }
-
-    public int  sharedEdges(TangramShape that) {
-        int count = 0;
-        for (Line2D edge : this.getEdges()) {
-            for (Line2D thatEdge : that.getEdges()) {
-                if (edge.intersectsLine(thatEdge)) {
-                    count++;
-                }
-            }
-        }
-        return count;
-    }
-
-    public int sameEdges(TangramShape that) {
-        int count = 0;
-        for (Line2D edge : this.getEdges()) {
-            for (Line2D thatEdge : that.getEdges()) {
-                if (edge.getP1().equals(thatEdge.getP1()) && edge.getP2().equals(thatEdge.getP2())) {
-                    count++;
-                }
-            }
-        }
-        return count;
-    }
-
-
-    public List<Point> insidePoints() {
-        // Get all points inside the shape
-        List<Point> insidePoints = new ArrayList<>();
-        for (int x = shape.getBounds().x; x < shape.getBounds().x + shape.getBounds().width; x++) {
-            for (int y = shape.getBounds().y; y < shape.getBounds().y + shape.getBounds().height; y++) {
-                if (shape.contains(x, y)) {
-                    insidePoints.add(new Point(x, y));
-                }
-            }
-        }
-        return insidePoints;
-    }
-
-    public boolean collidesWith(TangramShape that) {
-        for (int i = 0; i < this.shape.npoints; i++) {
-            if (that.shape.contains(this.shape.xpoints[i], this.shape.ypoints[i])) {
-                return true;
-            }
-        }
-        return false;
-    }
 
     public void setEdges() {
             this.edges = getEdges();
     }
-
-        public int pointsOnEdges(TangramShape that) {
-            int count = 0;
-            setEdges();
-            that.setEdges();
-            for (Point point : this.points) {
-                for (Line2D edge : that.edges) {
-                    if (edge.ptLineDist(point) < 1) {
-                        count++;
-                    }
-                }
-
-            }
-            return count;
-        }
-
-        public boolean crossesEdges(TangramShape that) {
-        setEdges();
-        int counter =0;
-            for (Line2D edge : this.edges) {
-                for (Line2D thatEdge : that.edges) {
-                    if (edge.intersectsLine(thatEdge)) {
-                        counter++;
-                    }
-                }
-            }
-            System.out.println(counter);
-            if(counter == 2 || counter >=3){
-                return  true;
-            }else{
-                return false;
-            }
-
-        }
-
-        public boolean pointsOnOtherLines(TangramShape that){
-            setEdges();
-            int counter =0;
-            setPoints();
-            for (Point point : this.points){
-                for (Line2D line: that.getEdges()){
-                    System.out.println(line.ptLineDist(point));
-                    if(line.ptLineDist(point) ==0.0){
-                        System.out.println(line.toString());
-                        counter++;
-                    }
-                }
-            }
-            System.out.println(counter);
-            if(counter >=3){
-                return  true;
-            }else{
-                return false;
-            }
-        }
-
 
     // Check if a TangramShape is outside the visible area
     public boolean isOutsideVisibleArea( int width, int height) {
         Rectangle visibleArea = new Rectangle(80, 80, width, height);
         System.out.println(visibleArea);
         return !visibleArea.contains(this.shape.getBounds());
+    }
+
+    public void gravity(TangramShape that){
+        if (this.isCloseTo(that)) {
+            System.out.println("Close to shape2");
+            this.shape.xpoints = that.shape.xpoints;
+            this.shape.ypoints = that.shape.ypoints;
+            that.setEdges();
+            this.setEdges();
+            that.setPoints();
+            this.setPoints();
+            that.setSolvedPos(true);
+            this.setSolvedPos(true);
+            this.isMoveable = false;
+            that.isMoveable = false;
+        }
+
     }
 
 
