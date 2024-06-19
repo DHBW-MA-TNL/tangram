@@ -2,7 +2,6 @@ package backend;
 
 import java.awt.*;
 import java.awt.geom.Line2D;
-import java.io.Console;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Vector;
@@ -40,8 +39,9 @@ public class TangramShape {
     public void setSolvedPos(boolean b){
         solvedPos=b;
     }
-    public boolean isSolved(){
-        return solvedPos;
+
+    public boolean isNotSolved(){
+        return !solvedPos;
     }
 
     public List<Line2D> getEdges() {
