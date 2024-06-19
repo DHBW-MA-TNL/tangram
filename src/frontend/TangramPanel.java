@@ -139,7 +139,7 @@ public class TangramPanel extends JPanel implements MouseListener, MouseMotionLi
 
         //JoptionPane with init() on close
         JOptionPane.showMessageDialog(this, "Gelöst nach: " + time + " Sekunden", "Gelöst", JOptionPane.INFORMATION_MESSAGE);
-        init();
+        //init();
     }
 
     void drawStats(Graphics g){
@@ -219,6 +219,7 @@ public class TangramPanel extends JPanel implements MouseListener, MouseMotionLi
             solvedScreen(elapsedTimeInSeconds);
             TangramGame.addScore(1);
             isSolved = true;
+            init();
             if (elapsedTimeInSeconds < 60) {
                 streakUnder1Min++;
                 if (streakUnder1Min == 3 && lvl < 4) {
@@ -291,7 +292,7 @@ public class TangramPanel extends JPanel implements MouseListener, MouseMotionLi
         super.paintComponent(g);
         for (UiElement uiElement : uiElements) {
             uiElement.draw(g);
-            System.out.println("added frontend.UiElement");
+            //System.out.println("added frontend.UiElement");
         }
         for (TangramShape shape : levelShapes) {
             shape.draw(g);
@@ -326,13 +327,6 @@ public class TangramPanel extends JPanel implements MouseListener, MouseMotionLi
                 break;
             }
         }
-/*        for (TangramShape shape : levelShapes) {
-            if (shape.shape.contains(e.getPoint())) {
-                selectedShape = shape;
-                initialMousePos = e.getPoint();
-                break;
-            }
-        }*/
     }
 
     @Override
