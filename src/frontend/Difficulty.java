@@ -14,12 +14,8 @@ import cfg.Commons;
 
 public class Difficulty extends JPanel implements ActionListener {
 
-    public static List<TangramShape> shapes = new ArrayList<>();
-    public static List<TangramShape> shapes2 = new ArrayList<>();
+
     public static List<UiElement> uiElements = new ArrayList<>();
-    public static List<TangramShape> coloredShapes = new ArrayList<>();
-    public static List<TangramShape> tmp = new ArrayList<>();
-    public static Random random = new Random();
 
 
     private final JPanel frame = new JPanel(null);
@@ -114,25 +110,6 @@ public class Difficulty extends JPanel implements ActionListener {
         return new Color(r, g, b);
     }
 
-    // Methode zum Setzen des Hintergrundbildes
-    private void setBackgroundImage(String imagePath) {
-        try {
-            System.out.println("0");
-            ImageIcon icon = new ImageIcon(getClass().getResource(imagePath));
-            System.out.println("1");
-            JLabel backgroundLabel = new JLabel(icon);
-            System.out.println("2");
-            //setContentPane(backgroundLabel);
-            System.out.println("3");
-            //getContentPane().setLayout(new BorderLayout());
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-    }
-
-    public Commons.Difficulty getLevel() {
-        return this.level;
-    }
 
     private void showWindow() {
         setSize(1350, 770); // Breite x Höhe
