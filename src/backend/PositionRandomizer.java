@@ -3,7 +3,6 @@ package backend;
 import java.awt.*;
 import java.awt.geom.Area;
 import java.util.*;
-import java.awt.geom.Line2D;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
@@ -11,39 +10,9 @@ import java.util.Random;
 public class PositionRandomizer {
     private static final Random random = new Random();
 
-    private static List<Point> getVertices(Polygon polygon) {
-        List<Point> vertices = new ArrayList<>();
-
-        for (int i = 0; i < polygon.npoints; i++) {
-            vertices.add(new Point(polygon.xpoints[i], polygon.ypoints[i]));
-        }
-
-        return vertices;
-    }
-
     public static List<TangramShape> shufflePolygons(List<TangramShape> unused, List<TangramShape> used, int px, int py) {
 
         return shufflePolygons(unused, used, px, py, new ArrayList<>());
-    }
-
-    public static String getColorName(Color color) {
-        if (color.equals(Color.BLUE)) {
-            return "Blau";
-        } else if (color.equals(Color.RED)) {
-            return "Rot";
-        } else if (color.equals(Color.GREEN)) {
-            return "Grün";
-        } else if (color.equals(Color.MAGENTA)) {
-            return "Magenta";
-        } else if (color.equals(Color.ORANGE)) {
-            return "Orange";
-        } else if (color.equals(Color.YELLOW)) {
-            return "Gelb";
-        } else if (color.equals(Color.CYAN)) {
-            return "Cyan";
-        } else {
-            return "Unbekannt"; // Wenn keine passende Farbbezeichnung gefunden wird
-        }
     }
 
     public static boolean polygonsIntersect(TangramShape current, List<TangramShape> used) {
