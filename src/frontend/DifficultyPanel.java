@@ -10,7 +10,7 @@ import java.util.List;
 
 import cfg.Commons;
 
-public class Difficulty extends JPanel implements ActionListener {
+public class DifficultyPanel extends JPanel implements ActionListener {
 
 
     public static List<UiElement> uiElements = new ArrayList<>();
@@ -22,7 +22,7 @@ public class Difficulty extends JPanel implements ActionListener {
     private final int differY = 98;   // The difference between the single buttons at the Y line
 
 
-    public Difficulty() {
+    public DifficultyPanel() {
         setLayout(null);
         //setBackground(Color.lightGray);
         add(new JLabel("Panel three"));
@@ -106,7 +106,7 @@ public class Difficulty extends JPanel implements ActionListener {
     }
 
     public static void main(String[] args) {
-        var difficulty = new Difficulty();
+        var difficulty = new DifficultyPanel();
         difficulty.showWindow();
     }
 
