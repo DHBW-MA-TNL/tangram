@@ -2,6 +2,7 @@ package frontend;
 
 import backend.PositionRandomizer;
 import backend.TangramShape;
+import backend.TangramTimer;
 import cfg.Commons;
 import main.TangramGame;
 
@@ -12,13 +13,12 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class TangramPanel extends JPanel implements MouseListener, MouseMotionListener {
+    private final UiElement[] uiElements;
+
+    //Time Variables
+    TangramTimer timer = new TangramTimer();
     //Shape Variables
     List<TangramShape> grayShapes;
-    //Time Variables
-    long startTime;
-    long endTime;
-    long elapsedTime = 0;
-    double elapsedTimeInSeconds = elapsedTime / 1000.0;
     boolean inLevel = false;
     boolean isSolved = false;
     int lvl;
@@ -26,7 +26,6 @@ public class TangramPanel extends JPanel implements MouseListener, MouseMotionLi
     int streakOver4Min = 0;
     private List<TangramShape> puzzleShapes;
     private TangramShape selectedShape = null;
-    private final UiElement[] uiElements;
     private Point initialMousePos;
 
 
@@ -45,15 +44,13 @@ public class TangramPanel extends JPanel implements MouseListener, MouseMotionLi
         this.setRequestFocusEnabled(true);
         setLayout(null);
 
-        addButton("Figuren", 1190, 50);
+        nonClickButton("Figuren", 1190, 50);
         clickButton("Tangram Puzzle", 120, 50,
                 e -> {
                     getParent().add(new DifficultyPanel());
                     setVisible(false);
                     getParent().remove(this);
-
                     repaint();
-
                 });
         clickButton("Neues Level", 675, 730, e -> init());
         clickButton("Prüfen", 900, 730, e -> {
@@ -62,14 +59,7 @@ public class TangramPanel extends JPanel implements MouseListener, MouseMotionLi
             }
         });
 
-
-        var scalePanel = new DifficultyScalePanel(Color.RED, Color.GREEN, 1);
-        var scaleCover = new DifficultyScalePanel(Color.LIGHT_GRAY, Color.LIGHT_GRAY, 2);
-        scaleCover.setBounds(20, 400, 50, ((350) / 5) * Commons.diffScaler[lvl]);
-        scalePanel.setBounds(20, 400, 50, 350);
-        add(scaleCover);
-        add(scalePanel);
-
+            difficultyBar();
 
         grayShapes = PositionRandomizer.shufflePolygons(grayShapes, new ArrayList<>(), 300, 300);
         for (TangramShape shape : grayShapes) {
@@ -81,6 +71,15 @@ public class TangramPanel extends JPanel implements MouseListener, MouseMotionLi
         }
         repaint();
 
+    }
+
+    void difficultyBar(){
+        var scalePanel = new DifficultyScalePanel(Color.RED, Color.GREEN, 1);
+        var scaleCover = new DifficultyScalePanel(Color.LIGHT_GRAY, Color.LIGHT_GRAY, 2);
+        scaleCover.setBounds(20, 400, 50, ((350) / 5) * Commons.diffScaler[lvl]);
+        scalePanel.setBounds(20, 400, 50, 350);
+        add(scaleCover);
+        add(scalePanel);
     }
 
     public void init() {
@@ -113,15 +112,12 @@ public class TangramPanel extends JPanel implements MouseListener, MouseMotionLi
         int statsX = 1120;
         int statsY = 190;
 
-        endTime = System.currentTimeMillis();
-        elapsedTime = endTime - startTime;
-        elapsedTimeInSeconds = elapsedTime / 1000.0;
 
         g.drawString("Schwierigkeitsstufe: " + lvl, statsX, statsY + 15);
         g.drawString("Score: " + TangramGame.score, statsX, statsY + 30);
     }
 
-    private void addButton(String text, int x, int y) {
+    private void nonClickButton(String text, int x, int y) {
         var button = new RoundButton(text);
         button.setBackground(Color.LIGHT_GRAY); // Set the background color of the button
         button.setForeground(Color.BLACK); // Set the text color of the button
@@ -172,15 +168,14 @@ public class TangramPanel extends JPanel implements MouseListener, MouseMotionLi
         }
 
         System.out.println("Solved");
-        endTime = System.currentTimeMillis();
-        elapsedTime = endTime - startTime;
-        elapsedTimeInSeconds = elapsedTime / 1000.0;
-        System.out.println("Elapsed time: " + elapsedTimeInSeconds + " seconds");
-        solvedScreen(elapsedTimeInSeconds);
+        timer.stop();
+        double elapsedTime = timer.getElapsedTimeInSeconds();
+        System.out.println("Elapsed time: " + elapsedTime + " seconds");
+        solvedScreen(elapsedTime);
         TangramGame.addScore(1);
         isSolved = true;
         init();
-        if (elapsedTimeInSeconds < Commons.levelUpTime) {
+        if (elapsedTime < Commons.levelUpTime) {
             streakUnder1Min++;
             if (streakUnder1Min == Commons.requiredLevelUpStreak && lvl < 4) {
                 // JOptionPane. dialog button text
@@ -231,6 +226,7 @@ public class TangramPanel extends JPanel implements MouseListener, MouseMotionLi
     }
 
 
+
     @Override
     protected void paintComponent(Graphics g) {
         super.paintComponent(g);
@@ -247,13 +243,15 @@ public class TangramPanel extends JPanel implements MouseListener, MouseMotionLi
         this.grabFocus();
 
         drawStats(g);
+        drawManual(g);
+    }
 
+    void drawManual(Graphics g) {
+        g.setColor(Color.white);
         g.drawString("MouseDrag/Rechtsklick - Shape wählen/bewegen", 1030, 700);
         g.drawString("Leertaste - Prüfen", 1030, 720);
         g.drawString("R - Shape drehen", 1030, 740);
         g.drawString("L - Neues Level", 1030, 760);
-
-
     }
 
     @Override
@@ -285,7 +283,7 @@ public class TangramPanel extends JPanel implements MouseListener, MouseMotionLi
             selectedShape.setEdges();
             selectedShape.setPoints();
             if (!inLevel) {
-                startTime = System.currentTimeMillis();
+                timer.start();
             }
             inLevel = true;
             repaint();
