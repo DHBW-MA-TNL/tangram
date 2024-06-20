@@ -140,6 +140,7 @@ public class TangramPanel extends JPanel implements MouseListener, MouseMotionLi
     }
 
     void resetUnsolvedShapes(List<TangramShape> shapes) {
+        selectedShape = null;
         for (TangramShape shape : shapes) {
             if (shape.isNotSolved()) {
                 shape.isMoveable = true;
@@ -152,64 +153,65 @@ public class TangramPanel extends JPanel implements MouseListener, MouseMotionLi
 
     public void isSolved(List<TangramShape> gS, List<TangramShape> sol) {
         gravityAll(gS, sol);
-        for (TangramShape shape : sol) {
-            if (shape.isNotSolved()) {
-                selectedShape = null;
-                resetUnsolvedShapes(sol);
-                System.out.println("Not solved");
-                return;
-            }
+        if (allShapesSolved(gS) && allShapesSolved(sol)) {
+            System.out.println("Solved");
+            timer.stop();
+            double elapsedTime = timer.getElapsedTimeInSeconds();
+            System.out.println("Elapsed time: " + elapsedTime + " seconds");
+            solvedScreen(elapsedTime);
+            TangramGame.addScore(1);
+            isSolved = true;
+            init();
+            updateStreaks(elapsedTime);
+        } else {
+            System.out.println("Not solved");
+            resetUnsolvedShapes(sol);
         }
-        for (TangramShape shape : gS) {
-            if (shape.isNotSolved()) {
-                System.out.println("Not solved");
-                return;
-            }
-        }
+    }
 
-        System.out.println("Solved");
-        timer.stop();
-        double elapsedTime = timer.getElapsedTimeInSeconds();
-        System.out.println("Elapsed time: " + elapsedTime + " seconds");
-        solvedScreen(elapsedTime);
-        TangramGame.addScore(1);
-        isSolved = true;
-        init();
+    private boolean allShapesSolved(List<TangramShape> shapes) {
+        return shapes.stream().allMatch(TangramShape::isSolved);
+    }
+
+    private void updateStreaks(double elapsedTime) {
         if (elapsedTime < Commons.levelUpTime) {
             streakUnder1Min++;
-            if (streakUnder1Min == Commons.requiredLevelUpStreak && lvl < 4) {
-                // JOptionPane. dialog button text
-                int dialogButton = JOptionPane.YES_NO_OPTION;
-                int dialogResult = JOptionPane.showConfirmDialog(null, "Möchten Sie das nächste Level spielen?", "Weiter?", dialogButton);
-                if (dialogResult == JOptionPane.YES_OPTION) {
-                    lvl++;
-                    init();
-                }
-                streakUnder1Min = 0;
-                streakOver4Min = 0;
-
-            }
+            checkLevelUp();
         } else if (elapsedTime > Commons.levelDownTime) {
-
             streakOver4Min++;
-            if (streakOver4Min == Commons.requiredLevelDownStreak && lvl > 0) {
-                // JOptionPane. dialog button text
-                int dialogButton = JOptionPane.YES_NO_OPTION;
-                int dialogResult = JOptionPane.showConfirmDialog(null, "Möchten Sie das vorherige Level spielen?", "Zurück?", dialogButton);
-                if (dialogResult == JOptionPane.YES_OPTION) {
-                    lvl--;
-                    init();
-                }
-                streakUnder1Min = 0;
-                streakOver4Min = 0;
-
-            }
-
+            checkLevelDown();
         } else {
-            streakOver4Min = 0;
-            streakUnder1Min = 0;
+            resetStreaks();
         }
+    }
 
+    private void checkLevelUp() {
+        if (streakUnder1Min == Commons.requiredLevelUpStreak && lvl < 4) {
+            int dialogButton = JOptionPane.YES_NO_OPTION;
+            int dialogResult = JOptionPane.showConfirmDialog(null, "Möchten Sie das nächste Level spielen?", "Weiter?", dialogButton);
+            if (dialogResult == JOptionPane.YES_OPTION) {
+                lvl++;
+                init();
+            }
+            resetStreaks();
+        }
+    }
+
+    private void checkLevelDown() {
+        if (streakOver4Min == Commons.requiredLevelDownStreak && lvl > 0) {
+            int dialogButton = JOptionPane.YES_NO_OPTION;
+            int dialogResult = JOptionPane.showConfirmDialog(null, "Möchten Sie das vorherige Level spielen?", "Zurück?", dialogButton);
+            if (dialogResult == JOptionPane.YES_OPTION) {
+                lvl--;
+                init();
+            }
+            resetStreaks();
+        }
+    }
+
+    private void resetStreaks() {
+        streakUnder1Min = 0;
+        streakOver4Min = 0;
     }
 
     public void gravityAll(List<TangramShape> gS, List<TangramShape> sol) {
