@@ -7,13 +7,13 @@ import java.util.List;
 import java.util.Vector;
 
 public class TangramShape {
-    public Polygon shape;
-    public Color color;
-    public List<Point> points = new Vector<>();
+    public final Polygon shape;
+    public final Color color;
+    public final List<Point> points = new Vector<>();
     public List<Line2D> edges = new ArrayList<>();
     private boolean solvedPos=false;
     public boolean isMoveable = true;
-    public Polygon originalShape;
+    public final Polygon originalShape;
 
     public TangramShape(Polygon shape, Color color) {
         this.shape = shape;
