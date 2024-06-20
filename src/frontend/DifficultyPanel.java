@@ -13,13 +13,8 @@ import cfg.Commons;
 public class DifficultyPanel extends JPanel implements ActionListener {
 
 
-    public static List<UiElement> uiElements = new ArrayList<>();
+    public static final List<UiElement> uiElements = new ArrayList<>();
     public Commons.Difficulty level;
-
-    private final int middleX = 675;  // The middle point X for the area in which the buttons should be placed
-    private final int middleY = 430;  // The middle point Y for the area in which the buttons should be placed
-    private final int differX = 238;  // The difference between the single buttons at the X line
-    private final int differY = 98;   // The difference between the single buttons at the Y line
 
 
     public DifficultyPanel() {
@@ -32,6 +27,8 @@ public class DifficultyPanel extends JPanel implements ActionListener {
         // Füge die Schwierigkeitsskala hinzu
 
 
+        // The middle point X for the area in which the buttons should be placed
+        int middleX = 675;
         addTitle("Tangram - ein klassisches", middleX, 10);
         addTitle("Puzzle neu gedacht", middleX, 70);
 
@@ -39,9 +36,15 @@ public class DifficultyPanel extends JPanel implements ActionListener {
         var yellow = Color.YELLOW;
         var orange = Color.ORANGE;
         var red = Color.RED;
-        var green_yellow = interpolateColor(green, yellow, 0.5f);
-        var orange_red = interpolateColor(orange, red, 0.5f);
+        var green_yellow = interpolateColor(green, yellow);
+        var orange_red = interpolateColor(orange, red);
 
+        // The middle point Y for the area in which the buttons should be placed
+        int middleY = 430;
+        // The difference between the single buttons at the X line
+        int differX = 238;
+        // The difference between the single buttons at the Y line
+        int differY = 98;
         addButtonWithScale("Unerfahren", middleX - 2 * differX, middleY + 2 * differY,
                 Commons.Difficulty.UNERFAHREN, green, green_yellow,0);
         addButtonWithScale("Anfänger", middleX - differX, middleY + differY,
@@ -92,7 +95,8 @@ public class DifficultyPanel extends JPanel implements ActionListener {
         repaint();
     }
 
-    private static Color interpolateColor(Color c1, Color c2, float ratio) {
+    private static Color interpolateColor(Color c1, Color c2) {
+        float ratio=0.5f;
         int r = (int) (c1.getRed() * (1 - ratio) + c2.getRed() * ratio);
         int g = (int) (c1.getGreen() * (1 - ratio) + c2.getGreen() * ratio);
         int b = (int) (c1.getBlue() * (1 - ratio) + c2.getBlue() * ratio);
