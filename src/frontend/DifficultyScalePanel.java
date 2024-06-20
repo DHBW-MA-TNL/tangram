@@ -4,17 +4,85 @@ import javax.swing.*;
 import java.awt.*;
 import java.awt.geom.GeneralPath;
 
+/**
+ * DifficultyScalePanel is a class that extends JPanel.
+ * It represents a panel with a difficulty scale in the UI.
+ * It contains a start color, an end color, and a type, and overrides the paintComponent method of JPanel to draw the difficulty scale.
+ */
 public class DifficultyScalePanel extends JPanel {
+    /**
+     * The type of the difficulty scale.
+     */
     private final int type;
+
+    /**
+     * The start color of the difficulty scale.
+     */
     private final Color startColor;
+
+    /**
+     * The end color of the difficulty scale.
+     */
     private final Color endColor;
 
+    /**
+     * Constructor for the DifficultyScalePanel class.
+     * It initializes the start color, end color, and type of the difficulty scale.
+     *
+     * @param startColor The start color of the difficulty scale.
+     * @param endColor   The end color of the difficulty scale.
+     * @param type       The type of the difficulty scale.
+     */
     public DifficultyScalePanel(Color startColor, Color endColor, int type) {
         this.startColor = startColor;
         this.endColor = endColor;
         this.type = type;
     }
 
+    /**
+     * This method returns a GeneralPath object that represents a rounded rectangle.
+     * It is used to draw the difficulty scale on the panel.
+     *
+     * @param width  The width of the rounded rectangle.
+     * @param height The height of the rounded rectangle.
+     * @return A GeneralPath object that represents a rounded rectangle.
+     * @see GeneralPath
+     */
+    private static GeneralPath getGeneralPath(int width, int height) {
+        GeneralPath path = new GeneralPath();
+
+        // Move to the first point (top-left corner)
+        path.moveTo(0, 20);
+
+        // Draw a curve from the current point to (20, 0) with a control point at (0, 0)
+        path.quadTo(0, 0, 20, 0);
+
+        // Draw a line to the top-right corner
+        path.quadTo(width, 0, width, 20);
+
+        // Draw a line to the bottom-right corner
+        path.lineTo(width, height);
+
+        // Draw a line to the bottom-left corner
+        path.lineTo(20, height);
+
+        // Draw a curve back to the starting point with a control point at (0, height)
+        path.lineTo(0, height);
+
+        // Close the path
+        path.closePath();
+        return path;
+    }
+
+    /**
+     * This method is called when the panel is to be painted.
+     * It creates a new Graphics2D object from the Graphics object passed as an argument, and sets the rendering hint for antialiasing.
+     * It then paints the difficulty scale on the panel with a linear or radial gradient, depending on the type of the difficulty scale.
+     *
+     * @param g The Graphics object to paint on.
+     * @see Graphics
+     * @see Graphics2D
+     */
     @Override
     protected void paintComponent(Graphics g) {
         super.paintComponent(g);
@@ -53,31 +121,5 @@ public class DifficultyScalePanel extends JPanel {
 
         }
 
-    }
-
-    private static GeneralPath getGeneralPath(int width, int height) {
-        GeneralPath path = new GeneralPath();
-
-        // Move to the first point (top-left corner)
-        path.moveTo(0, 20);
-
-        // Draw a curve from the current point to (20, 0) with a control point at (0, 0)
-        path.quadTo(0, 0, 20, 0);
-
-        // Draw a line to the top-right corner
-        path.quadTo(width, 0, width, 20);
-
-        // Draw a line to the bottom-right corner
-        path.lineTo(width, height);
-
-        // Draw a line to the bottom-left corner
-        path.lineTo(20, height);
-
-        // Draw a curve back to the starting point with a control point at (0, height)
-        path.lineTo(0, height);
-
-        // Close the path
-        path.closePath();
-        return path;
     }
 }

@@ -6,8 +6,20 @@ import java.awt.*;
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * GrayShapes is a class that generates the gray shapes for the Tangram game.
+ * It contains a list of TangramShape objects, and provides methods to multiply a polygon and get the gray shapes.
+ */
 public class GrayShapes{
+    /**
+     * The list of TangramShape objects that make up the gray shapes.
+     */
     public final List<TangramShape> grayShapes= new ArrayList<>();
+
+    /**
+     * Constructor for the GrayShapes class.
+     * It initializes the gray shapes for the game.
+     */
     public GrayShapes(){
         int multiplier = 2;
         Polygon D1 = multiplyPolygon(new Polygon(new int[]{0, 100, 50}, new int[]{0, 0, 50}, 3), multiplier);
@@ -26,6 +38,18 @@ public class GrayShapes{
         grayShapes.add(new TangramShape(Q1, Color.GRAY));
         grayShapes.add(new TangramShape(P1, Color.GRAY));
     }
+
+    /**
+     * This method multiplies the coordinates of a polygon by a multiplier.
+     * It returns a new Polygon object with the multiplied coordinates.
+     *
+     * @param polygon The Polygon object to be multiplied.
+     * @param multiplier The multiplier to multiply the coordinates of the polygon.
+     *
+     * @return A new Polygon object with the multiplied coordinates.
+     *
+     * @see Polygon
+     */
     public static Polygon multiplyPolygon(Polygon polygon, int multiplier) {
         int[] xpoints = new int[polygon.npoints];
         int[] ypoints = new int[polygon.npoints];
@@ -38,6 +62,13 @@ public class GrayShapes{
         return new Polygon(xpoints, ypoints, polygon.npoints);
     }
 
+    /**
+     * This method returns the list of TangramShape objects that make up the gray shapes.
+     *
+     * @return The list of TangramShape objects that make up the gray shapes.
+     *
+     * @see TangramShape
+     */
     public List<TangramShape> getGrayShapes(){
         return grayShapes;
     }
