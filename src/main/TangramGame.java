@@ -1,16 +1,12 @@
 package main;
 
 import frontend.DifficultyPanel;
-import frontend.UiElement;
 
 import javax.swing.*;
 import java.awt.*;
-import java.util.ArrayList;
-import java.util.List;
 
 public class TangramGame extends JFrame {
 
-    public static List<UiElement> uiElements = new ArrayList<>();
     public static int score = 0;
 
     public TangramGame() {
