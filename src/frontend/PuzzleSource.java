@@ -7,9 +7,9 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class PuzzleSource{
-    int vMover = 300;
-     int xMover = 1090;
-    public List<TangramShape> puzzleSrc= new ArrayList<>();
+    final int vMover = 300;
+     final int xMover = 1090;
+    public final List<TangramShape> puzzleSrc= new ArrayList<>();
     public PuzzleSource(){
 
         int multiplier= 2;

@@ -16,7 +16,7 @@ public class TangramPanel extends JPanel implements MouseListener, MouseMotionLi
     private final UiElement[] uiElements;
 
     //Time Variables
-    TangramTimer timer = new TangramTimer();
+    final TangramTimer timer = new TangramTimer();
     //Shape Variables
     List<TangramShape> grayShapes;
     boolean inLevel = false;
@@ -62,13 +62,14 @@ public class TangramPanel extends JPanel implements MouseListener, MouseMotionLi
             difficultyBar();
 
         grayShapes = PositionRandomizer.shufflePolygons(grayShapes, new ArrayList<>(), 300, 300);
+
         for (TangramShape shape : grayShapes) {
             if (shape.isOutsideVisibleArea(922, 690)) {
                 System.out.println("Shape out of bounds");
                 init();
             }
-
         }
+
         repaint();
 
     }
@@ -83,7 +84,6 @@ public class TangramPanel extends JPanel implements MouseListener, MouseMotionLi
     }
 
     public void init() {
-        System.out.println("Init");
         isSolved = false;
         inLevel = false;
 
@@ -97,8 +97,8 @@ public class TangramPanel extends JPanel implements MouseListener, MouseMotionLi
                 System.out.println("Shape out of bounds");
                 init();
             }
-
         }
+
         repaint();
     }
 
@@ -224,8 +224,6 @@ public class TangramPanel extends JPanel implements MouseListener, MouseMotionLi
             }
         }
     }
-
-
 
     @Override
     protected void paintComponent(Graphics g) {

@@ -7,7 +7,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class GrayShapes{
-    public List<TangramShape> grayShapes= new ArrayList<>();
+    public final List<TangramShape> grayShapes= new ArrayList<>();
     public GrayShapes(){
         int multiplier = 2;
         Polygon D1 = multiplyPolygon(new Polygon(new int[]{0, 100, 50}, new int[]{0, 0, 50}, 3), multiplier);
