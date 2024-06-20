@@ -226,7 +226,7 @@ void drawStats(Graphics g) {
     // Draw the level on the panel
     g.drawString("Schwierigkeitsstufe: " + lvl, statsX, statsY + 15);
     // Draw the score on the panel
-    g.drawString("Score: " + TangramGame.score, statsX, statsY + 30);
+    g.drawString("Score: " + TangramGame.getScore(), statsX, statsY + 30);
 }
 
 /**
