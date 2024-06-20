@@ -177,4 +177,8 @@ public class TangramShape {
         }
 
     }
+
+    public boolean isSolved() {
+        return solvedPos;
+    }
 }
