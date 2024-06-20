@@ -347,14 +347,6 @@ public class TangramPanel extends JPanel implements MouseListener, MouseMotionLi
                     }
                 }
 
-                case KeyEvent.VK_S -> {
-                    // Shuffle the shapes
-
-                    grayShapes = PositionRandomizer.shufflePolygons(grayShapes, new ArrayList<>(), 300, 300);
-                    repaint();
-
-                }
-
             }
         }
     }
