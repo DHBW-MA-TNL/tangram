@@ -39,7 +39,7 @@ public class DifficultyScalePanel extends JPanel {
 
         } else if (type == 2) {
             RadialGradientPaint gradient = new RadialGradientPaint(
-                    width / 2, height / 2, width / 2, fractions, colors, MultipleGradientPaint.CycleMethod.NO_CYCLE
+                    (float) width / 2, (float) height / 2, (float) width / 2, fractions, colors, MultipleGradientPaint.CycleMethod.NO_CYCLE
             );
 
             // Create a GeneralPath object
