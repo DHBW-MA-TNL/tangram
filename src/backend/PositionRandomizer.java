@@ -2,17 +2,45 @@ package backend;
 
 import java.awt.*;
 import java.awt.geom.Area;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
+import java.util.Random;
 
+/**
+ * PositionRandomizer is a class that provides methods to shuffle and position polygons in the Tangram game.
+ * It contains a static Random object for generating random numbers.
+ */
 public class PositionRandomizer {
+    /**
+     * The Random object for generating random numbers.
+     */
     private static final Random random = new Random();
 
+
+    /**
+     * This method shuffles and positions polygons.
+     *
+     * @param unused The list of unused polygons.
+     * @param used The list of used polygons.
+     * @param px The x-coordinate of the position.
+     * @param py The y-coordinate of the position.
+     *
+     * @return The list of used polygons after shuffling and positioning.
+     */
     public static List<TangramShape> shufflePolygons(List<TangramShape> unused, List<TangramShape> used, int px, int py) {
 
         return shufflePolygons(unused, used, px, py, new ArrayList<>());
     }
 
+    /**
+     * This method checks whether two polygons intersect.
+     *
+     * @param current The current polygon.
+     * @param used The list of used polygons.
+     *
+     * @return A boolean that indicates whether the polygons intersect.
+     */
     public static boolean polygonsIntersect(TangramShape current, List<TangramShape> used) {
         Area area1 = new Area(current.shape);
         for (TangramShape usedShape : used) {
@@ -24,6 +52,16 @@ public class PositionRandomizer {
         return false; // Keine Überlappung gefunden
     }
 
+    /**
+     * This method shuffles and positions polygons.
+     *
+     * @param unusedList The list of unused polygons.
+     * @param usedList   The list of used polygons.
+     * @param px         The x-coordinate of the position.
+     * @param py         The y-coordinate of the position.
+     * @param vertices   The list of vertices.
+     * @return The list of used polygons after shuffling and positioning.
+     */
     public static List<TangramShape> shufflePolygons(List<TangramShape> unusedList, List<TangramShape> usedList, int px, int py, List<Point> vertices) {
         //Rekursion soll enden, wenn die Liste der bisher noch nicht platzierten Figuren leer ist
         if (unusedList.isEmpty()) {

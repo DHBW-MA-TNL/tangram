@@ -145,7 +145,7 @@ public TangramPanel(UiElement[] uiElements, int lvl) {
  *
  * @see DifficultyScalePanel
  *
- * @author Luca Krawczyk
+ *
  */
 void difficultyBar(){
     // Create a scale panel with red and green colors
@@ -590,7 +590,6 @@ public void mouseDragged(MouseEvent e) {
      *
      * @see KeyAdapter
      *
-     * @author Luca Krawczyk
      */
     private class KeyPress extends KeyAdapter {
         /**
@@ -612,16 +611,6 @@ public void mouseDragged(MouseEvent e) {
                 case KeyEvent.VK_SPACE -> {
                     if (!isSolved) {
                         isSolved(grayShapes, puzzleShapes);
-                    }
-                }
-                // If the 'F' key is released, the selected shape is flipped
-                // if a shape is currently selected.
-                case KeyEvent.VK_F -> {
-                    // Flip the selected shape
-                    if (selectedShape != null) {
-                        System.out.println("Flipping shape");
-                        selectedShape.rotate(45);
-                        repaint();
                     }
                 }
 

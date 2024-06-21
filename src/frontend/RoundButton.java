@@ -5,7 +5,7 @@ import java.awt.*;
 
 /**
  * RoundButton is a class that extends JButton.
- * It represents a round button in the UI.
+ * It represents a rounded button in the UI.
  * It overrides the paintComponent and paintBorder methods of JButton to draw a round button.
  */
 public class RoundButton extends JButton {
