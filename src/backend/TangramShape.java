@@ -1,8 +1,6 @@
 package backend;
 
 import java.awt.*;
-import java.awt.geom.Line2D;
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Vector;
 
@@ -25,15 +23,11 @@ public class TangramShape {
     /**
      * The list of points that make up the shape.
      */
-    public final List<Point> points = new Vector<>();
+    private final List<Point> points = new Vector<>();
     /**
      * The Polygon object that represents the original shape.
      */
-    public final Polygon originalShape;
-    /**
-     * The list of edges of the shape.
-     */
-    public List<Line2D> edges = new ArrayList<>();
+    private final Polygon originalShape;
     /**
      * A boolean that indicates whether the shape is movable.
      */
@@ -54,7 +48,6 @@ public class TangramShape {
         this.shape = shape;
         this.color = color;
         setPoints();
-        this.edges = getEdges();
         //safe original shape
         originalShape = new Polygon(shape.xpoints, shape.ypoints, shape.npoints);
 
@@ -69,7 +62,6 @@ public class TangramShape {
             shape.ypoints[i] = originalShape.ypoints[i];
         }
         setPoints();
-        setEdges();
         isMoveable = true;
         this.shape.invalidate();
     }
@@ -90,22 +82,6 @@ public class TangramShape {
      */
     public boolean isNotSolved() {
         return !solvedPos;
-    }
-
-    /**
-     * This method returns the edges of the shape.
-     *
-     * @return A list of Line2D objects that represent the edges of the shape.
-     */
-    public List<Line2D> getEdges() {
-        List<Line2D> edges = new ArrayList<>();
-
-        for (int i = 0; i < this.shape.npoints; i++) {
-            int nextIndex = (i + 1) % this.shape.npoints; // Get the next index (loop back to 0 if at the end)
-            edges.add(new Line2D.Double(this.shape.xpoints[i], this.shape.ypoints[i], this.shape.xpoints[nextIndex], this.shape.ypoints[nextIndex]));
-        }
-
-        return edges;
     }
 
     /**
@@ -158,7 +134,6 @@ public class TangramShape {
             shape.ypoints[i] = (int) newY;
         }
         setPoints();
-        setEdges();
         this.shape.invalidate();
     }
 
@@ -219,7 +194,6 @@ public class TangramShape {
             this.shape.xpoints[i] = p.x + (int) Math.round(dx * cos - dy * sin);
             this.shape.ypoints[i] = p.y + (int) Math.round(dx * sin + dy * cos);
         }
-        setEdges();
         this.shape.invalidate();
     }
 
@@ -238,15 +212,7 @@ public class TangramShape {
             this.shape.xpoints[i] += dx;
             this.shape.ypoints[i] += dy;
         }
-        setEdges();
         this.shape.invalidate();
-    }
-
-    /**
-     * This method sets the edges of the shape.
-     */
-    public void setEdges() {
-        this.edges = getEdges();
     }
 
 
@@ -275,8 +241,6 @@ public class TangramShape {
             System.out.println("Close to shape2");
             this.shape.xpoints = that.shape.xpoints;
             this.shape.ypoints = that.shape.ypoints;
-            that.setEdges();
-            this.setEdges();
             that.setPoints();
             this.setPoints();
             that.setSolvedPos(true);

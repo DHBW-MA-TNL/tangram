@@ -555,7 +555,6 @@ public void mouseDragged(MouseEvent e) {
         selectedShape.move(dx, dy);
         initialMousePos = e.getPoint();
 
-        selectedShape.setEdges();
         selectedShape.setPoints();
         if (!inLevel) {
             timer.start();
