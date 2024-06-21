@@ -1,0 +1,10 @@
+<component name="ArtifactManager">
+  <artifact type="jar" name="Tangram-Game">
+    <output-path>$PROJECT_DIR$/out/artifacts/Tangram_Game</output-path>
+    <root id="archive" name="Tangram-Game.jar">
+      <element id="module-output" name="tangram" />
+      <element id="module-source" name="tangram" />
+      <element id="dir-copy" path="$PROJECT_DIR$/src" />
+    </root>
+  </artifact>
+</component>
